@@ -1,3 +1,5 @@
+(setq default-directory (expand-file-name "~/"))
+
 ;; Allow pasting selection outside of Emacs
 (setq x-select-enable-clipboard t)
 

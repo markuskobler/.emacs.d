@@ -57,6 +57,7 @@
      flx-ido
      css-eldoc
      yasnippet
+     go-mode
      smartparens
      ido-vertical-mode
      ido-at-point
@@ -92,8 +93,10 @@
 (eval-after-load 'org '(require 'setup-org))
 (eval-after-load 'dired '(require 'setup-dired))
 (eval-after-load 'magit '(require 'setup-magit))
+(require 'setup-paredit)
 
 (autoload 'flycheck-mode "setup-flycheck" nil t)
+(autoload 'auto-complete-mode "auto-complete" nil t)
 
 ;; Map files to modes
 (require 'mode-mappings)
