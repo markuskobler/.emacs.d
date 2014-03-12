@@ -93,6 +93,8 @@
 (eval-after-load 'org '(require 'setup-org))
 (eval-after-load 'dired '(require 'setup-dired))
 (eval-after-load 'magit '(require 'setup-magit))
+(eval-after-load 'go-mode '(require 'setup-go-mode))
+(require 'setup-yasnippet)
 (require 'setup-paredit)
 
 (autoload 'flycheck-mode "setup-flycheck" nil t)
@@ -106,6 +108,7 @@
 (hes-mode)
 (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
 
+(require 'find-file-in-project)
 
 (require 'key-bindings)
 

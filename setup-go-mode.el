@@ -1,0 +1,5 @@
+
+
+
+
+(provide 'setup-go-mode)
