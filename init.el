@@ -91,20 +91,19 @@
   (exec-path-from-shell-initialize))
 
 (eval-after-load 'ido '(require 'setup-ido))
-(eval-after-load 'org '(require 'setup-org))
+;;(eval-after-load 'org '(require 'setup-org))
 (eval-after-load 'dired '(require 'setup-dired))
 (eval-after-load 'magit '(require 'setup-magit))
 (eval-after-load 'grep '(require 'setup-rgrep))
 (require 'setup-hippie)
 (require 'setup-yasnippet)
+(require 'setup-perspective)
 (require 'setup-paredit)
-(require 'setup-go-mode)
+(require 'setup-ffip)
+(require 'setup-html-mode)
 
 ;; Font lock dash.el
 (eval-after-load "dash" '(dash-enable-font-lock))
-
-(autoload 'flycheck-mode "setup-flycheck" nil t)
-(autoload 'auto-complete-mode "auto-complete" nil t)
 
 ;; Default setup of smartparens
 (require 'smartparens-config)
@@ -117,6 +116,14 @@
           markdown-mode)
   (add-hook it 'turn-on-smartparens-mode))
 
+;; Language specific setup files
+(eval-after-load 'js2-mode '(require 'setup-js2-mode))
+(eval-after-load 'markdown-mode '(require 'setup-markdown-mode))
+(eval-after-load 'go-mode '(require 'setup-go-mode))
+
+;; Load on demand
+(autoload 'flycheck-mode "setup-flycheck" nil t)
+(autoload 'auto-complete-mode "auto-complete" nil t)
 
 ;; Map files to modes
 (require 'mode-mappings)
@@ -125,8 +132,6 @@
 (require 'highlight-escape-sequences)
 (hes-mode)
 (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
-
-(require 'find-file-in-project)
 
 (require 'key-bindings)
 
