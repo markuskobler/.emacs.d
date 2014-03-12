@@ -18,6 +18,11 @@
 ;; Set up appearance early
 (require 'appearance)
 
+;; Settings for currently logged in user
+(setq user-settings-dir
+      (concat user-emacs-directory "users/" user-login-name))
+(add-to-list 'load-path user-settings-dir)
+
 ;; Add external projects to load path
 (dolist (project (directory-files site-lisp-dir t "\\w+"))
   (when (file-directory-p project)
@@ -83,14 +88,32 @@
   (require-package 'exec-path-from-shell)
   (exec-path-from-shell-initialize))
 
+(eval-after-load 'ido '(require 'setup-ido))
+(eval-after-load 'org '(require 'setup-org))
+(eval-after-load 'dired '(require 'setup-dired))
+(eval-after-load 'magit '(require 'setup-magit))
+
+(autoload 'flycheck-mode "setup-flycheck" nil t)
+
+;; Map files to modes
+(require 'mode-mappings)
+
+;; Highlight escape sequences
+(require 'highlight-escape-sequences)
+(hes-mode)
+(put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
+
+
 (require 'key-bindings)
 
-(show-paren-mode 1)
-
-;; Emacs server
 (require 'server)
 (unless (server-running-p)
   (server-start))
+
+;; Run at full power please
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
 
 ;; Conclude init by setting up specifics for the current user
 (when (file-exists-p user-settings-dir)
