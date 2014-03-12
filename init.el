@@ -48,6 +48,7 @@
   (packages-install
    '(magit
      paredit
+     auto-complete
      move-text
      gist
      htmlize
@@ -94,14 +95,16 @@
 (eval-after-load 'dired '(require 'setup-dired))
 (eval-after-load 'magit '(require 'setup-magit))
 (eval-after-load 'grep '(require 'setup-rgrep))
-(eval-after-load 'go-mode '(require 'setup-go-mode))
 (require 'setup-hippie)
 (require 'setup-yasnippet)
 (require 'setup-paredit)
-
+(require 'setup-go-mode)
 
 ;; Font lock dash.el
 (eval-after-load "dash" '(dash-enable-font-lock))
+
+(autoload 'flycheck-mode "setup-flycheck" nil t)
+(autoload 'auto-complete-mode "auto-complete" nil t)
 
 ;; Default setup of smartparens
 (require 'smartparens-config)
@@ -111,13 +114,9 @@
           js-mode-hook
           java-mode
           ruby-mode
-          markdown-mode
-          go-mode)
+          markdown-mode)
   (add-hook it 'turn-on-smartparens-mode))
 
-
-(autoload 'flycheck-mode "setup-flycheck" nil t)
-(autoload 'auto-complete-mode "auto-complete" nil t)
 
 ;; Map files to modes
 (require 'mode-mappings)
@@ -130,6 +129,8 @@
 (require 'find-file-in-project)
 
 (require 'key-bindings)
+
+(when is-mac (require 'mac))
 
 (require 'server)
 (unless (server-running-p)
