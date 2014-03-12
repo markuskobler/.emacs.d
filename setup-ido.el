@@ -1,7 +1,8 @@
 ;; Interactively Do Things
 
 (require 'ido)
-(ido-mode t)
+(ido-mode 1)
+(ido-everywhere 1)
 (setq ido-enable-prefix nil
       ido-enable-flex-matching t
       ido-case-fold nil

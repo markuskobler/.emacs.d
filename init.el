@@ -93,9 +93,28 @@
 (eval-after-load 'org '(require 'setup-org))
 (eval-after-load 'dired '(require 'setup-dired))
 (eval-after-load 'magit '(require 'setup-magit))
+(eval-after-load 'grep '(require 'setup-rgrep))
 (eval-after-load 'go-mode '(require 'setup-go-mode))
+(require 'setup-hippie)
 (require 'setup-yasnippet)
 (require 'setup-paredit)
+
+
+;; Font lock dash.el
+(eval-after-load "dash" '(dash-enable-font-lock))
+
+;; Default setup of smartparens
+(require 'smartparens-config)
+(setq sp-autoescape-string-quote nil)
+(--each '(css-mode-hook
+          restclient-mode-hook
+          js-mode-hook
+          java-mode
+          ruby-mode
+          markdown-mode
+          go-mode)
+  (add-hook it 'turn-on-smartparens-mode))
+
 
 (autoload 'flycheck-mode "setup-flycheck" nil t)
 (autoload 'auto-complete-mode "auto-complete" nil t)
@@ -120,6 +139,8 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
+
+(flx-ido-mode 1)
 
 ;; Conclude init by setting up specifics for the current user
 (when (file-exists-p user-settings-dir)
