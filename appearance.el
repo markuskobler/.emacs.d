@@ -14,8 +14,11 @@
   (when (file-directory-p path)
     (add-to-list 'custom-theme-load-path path)))
 
+;; (add-to-list 'custom-theme-load-path
+;; 	     (concat user-emacs-directory "themes" "solarized"))
+
 ;; Default theme
-(load-theme 'solarized=dark t)
+(load-theme 'solarized-dark t)
 
 ;; Don't defer screen updates when performing operations
 (setq redisplay-dont-pause t)
