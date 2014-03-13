@@ -140,6 +140,9 @@
 (require 'smart-forward)
 (require 'change-inner)
 
+(require 'git-gutter)
+(global-git-gutter-mode t)
+
 ;; Fill column indicator
 (require 'fill-column-indicator)
 (setq fci-rule-color "#111122")
