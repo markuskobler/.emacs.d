@@ -1,5 +1,8 @@
 (setq default-directory (expand-file-name "~/"))
 
+(set-default 'truncate-lines t)
+(setq truncate-partial-width-windows nil)
+
 (when is-mac
   (setq ns-function-modifier 'control))
 

@@ -73,7 +73,7 @@ May be set using .dir-locals.el. Checks each entry if set to a list.")
   "List of patterns to look for with `find-file-in-project'.")
 
 (defvar ffip-prune-patterns
-  '(".git")
+  '(".git" "bower_components" "node_modules" "third_party")
   "List of directory patterns to not decend into when listing files in `find-file-in-project'.")
 
 (defvar ffip-find-options ""
@@ -135,7 +135,7 @@ directory they are found in so that they are unique."
   (let ((file-alist nil)
         (root (expand-file-name (or ffip-project-root (ffip-project-root)
                                     (error "No project root found")))))
-    (mapcar (lambda (file)
+	(mapcar (lambda (file)
               (if ffip-full-paths
                   (cons (substring (expand-file-name file) (length root))
                         (expand-file-name file))

@@ -132,6 +132,12 @@
 (hes-mode)
 (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
 
+;; Functions (load all files in defuns-dir)
+(setq defuns-dir (expand-file-name "defuns" user-emacs-directory))
+(dolist (file (directory-files defuns-dir t "\\w+"))
+  (when (file-regular-p file)
+    (load file)))
+
 (require 'expand-region)
 (require 'multiple-cursors)
 (require 'delsel)
@@ -142,6 +148,10 @@
 
 (require 'git-gutter)
 (global-git-gutter-mode t)
+
+(require 'find-file-in-project)
+(setq ffip-prune-patterns
+      '(".git" "bower_components" "node_modules" "third_party"))
 
 ;; Fill column indicator
 (require 'fill-column-indicator)

@@ -12,6 +12,7 @@
 (add-hook 'go-mode-hook 'auto-complete-mode)
 (add-hook 'go-mode-hook
           (lambda ()
+            (setq truncate-lines nil)
             (add-hook 'before-save-hook 'gofmt-before-save)
             (go-eldoc-setup)
             (setq tab-width 4)))

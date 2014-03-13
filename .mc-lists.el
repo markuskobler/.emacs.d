@@ -3,8 +3,11 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        go-mode-insert-and-indent
         isearch-forward-regexp
+        isearch-other-control-char
         isearch-repeat-forward
+        yas-expand
         ))
 
 (setq mc/cmds-to-run-once
