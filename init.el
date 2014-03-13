@@ -136,7 +136,6 @@
 (require 'multiple-cursors)
 (require 'delsel)
 (require 'jump-char)
-(require 'eproject)
 (require 'wgrep)
 (require 'smart-forward)
 (require 'change-inner)
