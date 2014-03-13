@@ -132,6 +132,24 @@
 (hes-mode)
 (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
 
+(require 'expand-region)
+(require 'multiple-cursors)
+(require 'delsel)
+(require 'jump-char)
+(require 'eproject)
+(require 'wgrep)
+(require 'smart-forward)
+(require 'change-inner)
+(require 'multifiles)
+
+;; Fill column indicator
+(require 'fill-column-indicator)
+(setq fci-rule-color "#111122")
+
+;; Browse kill ring
+(require 'browse-kill-ring)
+(setq browse-kill-ring-quit-action 'save-and-restore)
+
 (require 'key-bindings)
 
 (when is-mac (require 'mac))
