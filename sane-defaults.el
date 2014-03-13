@@ -1,5 +1,8 @@
 (setq default-directory (expand-file-name "~/"))
 
+(when is-mac
+  (setq ns-function-modifier 'control))
+
 ;; Allow pasting selection outside of Emacs
 (setq x-select-enable-clipboard t)
 
