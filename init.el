@@ -15,7 +15,6 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
-;; Set up appearance early
 (require 'appearance)
 
 ;; Settings for currently logged in user
@@ -59,6 +58,7 @@
      css-eldoc
      yasnippet
      go-mode
+     projectile
      smartparens
      ido-vertical-mode
      ido-at-point
@@ -132,6 +132,9 @@
 (hes-mode)
 (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
 
+;; Visual regexp
+(require 'visual-regexp)
+
 ;; Functions (load all files in defuns-dir)
 (setq defuns-dir (expand-file-name "defuns" user-emacs-directory))
 (dolist (file (directory-files defuns-dir t "\\w+"))
@@ -145,6 +148,12 @@
 (require 'wgrep)
 (require 'smart-forward)
 (require 'change-inner)
+(require 'tramp)
+(setq tramp-default-method "ssh")
+
+(require 'projectile)
+(projectile-global-mode)
+(setq projectile-enable-caching t)
 
 (require 'git-gutter)
 (global-git-gutter-mode t)
@@ -161,9 +170,12 @@
 (require 'browse-kill-ring)
 (setq browse-kill-ring-quit-action 'save-and-restore)
 
-(require 'key-bindings)
+(require 'ansi-color)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 (when is-mac (require 'mac))
+
+(require 'key-bindings)
 
 (require 'server)
 (unless (server-running-p)

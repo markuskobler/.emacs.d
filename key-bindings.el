@@ -1,9 +1,5 @@
-
 ;; Expand region (increases selected region by semantic units)
 (global-set-key (if is-mac (kbd "C-@") (kbd "C-'")) 'er/expand-region)
-
-(if is-mac
-    (global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#"))))
 
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -23,7 +19,7 @@
 ;; Turn on the menu bar for exploring new modes
 (global-set-key (kbd "C-<f10>") 'menu-bar-mode)
 
-;; Jump to a definition in the current file. (This is awesome)
+;; Jump to a definition in the current file.
 (global-set-key (kbd "C-x C-i") 'ido-imenu)
 
 ;; File finding
@@ -69,7 +65,7 @@
 
 ;; Jump from file to containing directory
 (global-set-key (kbd "C-x C-j") 'dired-jump) (autoload 'dired-jump "dired")
-(global-set-key (kbd "C-x M-j") '(λ (dired-jump 1)))
+(global-set-key (kbd "C-x M-j") '(lambda () (dired-jump 1)))
 
 ;; Display and edit occurances of regexp in buffer
 (global-set-key (kbd "C-c o") 'occur)
@@ -78,6 +74,13 @@
 (global-set-key (kbd "M-s f") 'find-name-dired)
 
 ;; Find file in project
-(global-set-key (kbd "C-x o") 'find-file-in-project)
+;;(global-set-key (kbd "C-x o") 'find-file-in-project)
+
+(global-set-key (kbd "C-c C-t") 'run-go-tests)
+
+(define-key global-map (kbd "M-&") 'vr/query-replace)
+;;(define-key global-map (kbd "M-/") 'vr/replace)
+
+(define-key global-map (kbd "C-;") 'comment-or-uncomment-region)
 
 (provide 'key-bindings)
