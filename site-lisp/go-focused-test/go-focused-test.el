@@ -7,6 +7,16 @@
 
 ;;; Code:
 
+(require 'ansi-color)
+(require 'compile)
+
+(defun colorize-compilation-buffer ()
+  (toggle-read-only)
+  (ansi-color-apply-on-region (point-min) (point-max))
+  (toggle-read-only))
+
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
 (defun run-go-tests ()
   (interactive)
   (compile "go test -v ."))
