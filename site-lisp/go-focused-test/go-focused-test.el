@@ -17,6 +17,8 @@
 
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
+(add-to-list 'compilation-error-regexp-alist '("^\s*[(]?\\([^\n\s]*?\\)\\:\\([0-9]+\\)[)]?$" 1 2))
+
 (defun run-go-tests ()
   (interactive)
   (compile "go test -v ."))
