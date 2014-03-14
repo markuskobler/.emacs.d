@@ -21,7 +21,7 @@
     (run-skewer)
     (skewer-repl)))
 
-;;(require 'mouse-slider-mode)
+(require 'mouse-slider-mode)
 
 (add-to-list 'mouse-slider-mode-eval-funcs
              '(js2-mode . skewer-eval-defun))

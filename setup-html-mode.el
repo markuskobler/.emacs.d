@@ -1,3 +1,5 @@
+(require 'web-mode)
+
 (defun skip-to-next-blank-line ()
   (interactive)
   (let ((inhibit-changing-match-data t))
@@ -31,6 +33,7 @@
        '(apply simplezen-expand-or-indent-for-tab)))
 
 (add-hook 'sgml-mode-hook '--setup-simplezen)
+(add-hook 'web-mode-hook '--setup-simplezen)
 
 (eval-after-load "sgml-mode"
   '(progn
@@ -40,6 +43,8 @@
      (define-key html-mode-map (kbd "/") nil) ;; no buggy matching of slashes
 
      (define-key html-mode-map (kbd "C-c C-d") 'ng-snip-show-docs-at-point)
+
+     (setq truncate-lines nil)
 
      (require 'tagedit)
 

@@ -72,6 +72,7 @@
      gitconfig-mode
      gitignore-mode
      clojure-mode
+     web-mode
      prodigy
      cider
      cider-tracing)))

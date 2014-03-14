@@ -16,6 +16,7 @@
 
 ;; Default theme
 (load-theme 'solarized-dark t)
+;;(load-theme 'default-black t)
 
 ;; Don't defer screen updates when performing operations
 (setq redisplay-dont-pause t)
