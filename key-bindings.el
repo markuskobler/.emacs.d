@@ -65,7 +65,6 @@
 
 ;; Jump from file to containing directory
 (global-set-key (kbd "C-x C-j") 'dired-jump) (autoload 'dired-jump "dired")
-(global-set-key (kbd "C-x M-j") '(lambda () (dired-jump 1)))
 
 ;; Display and edit occurances of regexp in buffer
 (global-set-key (kbd "C-c o") 'occur)

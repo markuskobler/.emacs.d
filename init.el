@@ -121,6 +121,8 @@
 (eval-after-load 'go-mode '(require 'setup-go-mode))
 
 ;; Load on demand
+(autoload 'skewer-start "setup-skewer" nil t)
+(autoload 'skewer-demo "setup-skewer" nil t)
 (autoload 'flycheck-mode "setup-flycheck" nil t)
 (autoload 'auto-complete-mode "auto-complete" nil t)
 
