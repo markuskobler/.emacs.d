@@ -8,6 +8,7 @@ elpa
 swank
 history
 ac-comphist.dat
+projectile.cache
 emms
 site-lisp/adventur-mode
 *.elc
