@@ -28,9 +28,12 @@
     (add-to-list 'load-path project)))
 
 ;; Write backup files to own directory
-(setq backup-directory-alist
-      `(("." . ,(expand-file-name
-                 (concat user-emacs-directory "backups")))))
+;; (setq backup-directory-alist
+;;       `(("." . ,(expand-file-name
+;;                  (concat user-emacs-directory "backups")))))
+;; (setq auto-save-file-name-transforms
+;;       `(("." ,(expand-file-name
+;;                  (concat user-emacs-directory "backups")))))
 
 (require 'saveplace)
 (setq-default save-place t)

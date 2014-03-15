@@ -46,7 +46,9 @@
 
 ;; Facebook react support
 (require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+(add-hook 'js2-mode-hook
+          (lambda ()
+            (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))))
 
 ;; Snippets
 (add-to-list 'auto-mode-alist '("yasnippet/snippets" . snippet-mode))

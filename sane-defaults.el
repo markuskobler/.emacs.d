@@ -1,9 +1,11 @@
-(setq default-directory (expand-file-name "~/"))
+(setq make-backup-files nil)
+(setq auto-save-default nil)
 
 (set-default 'truncate-lines t)
 (setq truncate-partial-width-windows nil)
 
 (when is-mac
+  (setq default-directory (expand-file-name "~/"))
   (setq ns-function-modifier 'control))
 
 ;; Allow pasting selection outside of Emacs
