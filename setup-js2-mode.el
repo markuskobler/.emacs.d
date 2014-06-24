@@ -6,7 +6,8 @@
 (setq-default js2-global-externs
               '("module" "require" "buster" "sinon" "assert" "refute" "setTimeout" 
                 "clearTimeout" "setInterval" "clearInterval" "location" "__dirname" 
-                "console" "JSON" "mux" "import" "from"))
+                "console" "window" "Image" "JSON" "mux" "import" "from" "React"
+                "exports" "process" "GLOBAL" "Buffer"))
 (setq-default js2-idle-timer-delay 0.1)
 (setq-default js2-indent-on-enter-key nil)
 (setq-default js2-mirror-mode nil)
@@ -25,6 +26,10 @@
 (add-hook 'js2-mode-hook
           (lambda ()
             (setq truncate-lines nil)
+            (setq show-trailing-whitespace t)
+            (setq javascript-indent-level 2)
+            (setq tab-width 2)
+            (setq js2-basic-offset 2)
             (flycheck-mode 1)))
 
 (require 'js2-refactor)

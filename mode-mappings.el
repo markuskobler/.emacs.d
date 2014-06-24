@@ -21,17 +21,6 @@
 ;; HTML
 (add-to-list 'auto-mode-alist '("\\.html\\'" . html-mode))
 
-;; Ruby
-(autoload 'rhtml-mode "rhtml-mode")
-(add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.watchr$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.gemspec$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.ru$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Gemfile" . ruby-mode))
-(add-to-list 'auto-mode-alist '("capfile" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.erb$" . rhtml-mode))
-
 ;; Clojure
 (autoload 'clojure-mode "clojure-mode")
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
@@ -45,10 +34,10 @@
 (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
 
 ;; Facebook react support
-(require 'web-mode)
-(add-hook 'js2-mode-hook
-          (lambda ()
-            (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))))
+;; (require 'web-mode)
+;; (add-hook 'js2-mode-hook
+;;           (lambda ()
+;;             (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))))
 
 ;; Snippets
 (add-to-list 'auto-mode-alist '("yasnippet/snippets" . snippet-mode))

@@ -1,6 +1,9 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
+;; this might be dangarous to remove be broke too many other external software
+(setq create-lockfiles nil)
+
 (set-default 'truncate-lines t)
 (setq truncate-partial-width-windows nil)
 
@@ -101,9 +104,9 @@
 (setq org-src-fontify-natively t)
 
 ;; Represent undo-history as an actual tree (visualize with C-x u)
-(setq undo-tree-mode-lighter "")
-(require 'undo-tree)
-(global-undo-tree-mode)
+;;(setq undo-tree-mode-lighter "")
+;;(require 'undo-tree)
+;;(global-undo-tree-mode)
 
 ;; Sentences do not need double spaces to end. Period.
 (set-default 'sentence-end-double-space nil)

@@ -1,1 +1,0 @@
-("~/.emacs.d/" "~/code/markuskobler/cohesive/" "/ssh:kusadm@cohesive.io:/home/kusadm/www" "/ssh:vagrant@dev.cohesive.vm:/mnt")

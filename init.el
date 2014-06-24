@@ -28,12 +28,12 @@
     (add-to-list 'load-path project)))
 
 ;; Write backup files to own directory
-;; (setq backup-directory-alist
-;;       `(("." . ,(expand-file-name
-;;                  (concat user-emacs-directory "backups")))))
-;; (setq auto-save-file-name-transforms
-;;       `(("." ,(expand-file-name
-;;                  (concat user-emacs-directory "backups")))))
+(setq backup-directory-alist
+      `(("." . ,(expand-file-name
+                 (concat user-emacs-directory "backups")))))
+(setq auto-save-file-name-transforms
+      `(("." ,(expand-file-name
+                 (concat user-emacs-directory "backups")))))
 
 (require 'saveplace)
 (setq-default save-place t)
@@ -129,6 +129,13 @@
 (autoload 'skewer-demo "setup-skewer" nil t)
 (autoload 'flycheck-mode "setup-flycheck" nil t)
 (autoload 'auto-complete-mode "auto-complete" nil t)
+
+;; sql setup
+(setq auto-mode-alist
+      (append '(("\\.sql$" . sql-mode)
+                ("\\.ddl$" . sql-mode))
+              auto-mode-alist))
+(add-hook 'sql-mode-hook 'sql-highlight-postgres-keywords)
 
 ;; Map files to modes
 (require 'mode-mappings)
