@@ -19,10 +19,13 @@
 
 (defun init--install-packages ()                                               
   (packages-install                                                            
-   '(magit                                                                     
+   '(magit
+     magit-filenotify
+     magit-find-file
+     git-blame
+     git-gutter
      paredit                                                                   
      auto-complete                                                             
-     uniquify                                                             
      visual-regexp)))
 
 (condition-case nil                                                            
@@ -31,9 +34,10 @@
    (package-refresh-contents)                                                  
    (init--install-packages)))
 
-(eval-after-load 'magit '(require 'setup-magit))
+;;(eval-after-load 'magit '(require 'setup-magit))
 
-;; (require 'uniquify)
+(require 'uniquify)
+
 ;;(require 'undo-tree)
 ;;(global-undo-tree-mode)
 

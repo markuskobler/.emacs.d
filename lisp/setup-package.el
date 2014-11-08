@@ -1,5 +1,5 @@
+(require 'dash)
 (require 'package)
-;; (require 'dash)
 
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
