@@ -20,10 +20,6 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-(when is-mac
-  (setq default-directory (expand-file-name "~/"))
-  (setq ns-function-modifier 'control))
-
 ;; Allow pasting selection outside of Emacs
 (setq x-select-enable-clipboard t)
 
@@ -74,4 +70,4 @@
 ;; Represent undo-history as an actual tree (visualize with C-x u)
 ;;(setq undo-tree-mode-lighter "")
 
-(provide 'defaults)
+(provide 'init-defaults)

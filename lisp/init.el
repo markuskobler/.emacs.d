@@ -1,18 +1,10 @@
 ;;; -*- lexical-binding: t -*-
-(progn
-  (dolist (mode '(menu-bar-mode tool-bar-mode scroll-bar-mode))
-    (when (fboundp mode) (funcall mode -1))))
-
-(setq inhibit-startup-message t
-      initial-buffer-choice t)
 
 (defconst base-path
-  (expand-file-name "lisp" user-emacs-directory))
-(add-to-list 'load-path base-path)
+  (file-name-directory
+   (or (buffer-file-name) load-file-name)))
 
-(dolist (project (directory-files base-path t "\\w+"))
-  (when (file-directory-p project)
-	(add-to-list 'load-path project)))
+(add-to-list 'load-path base-path)
 
 (when (require 'server nil t)
   (unless (server-running-p)
@@ -21,8 +13,16 @@
 (defconst *is-mac*   (eq system-type 'darwin)              "Is macos")
 (defconst *is-cocoa* (and *is-mac* (eq window-system 'ns)) "Is cocoa")
 
-(require 'init-package)
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
+;; (defconst lisp-path  (expand-file-name "lisp" user-emacs-directory))
+;; (add-to-list 'load-path lisp-path)
+;; (dolist (project (directory-files lisp-path t "\\w+"))
+;;   (when (file-directory-p project)
+;; 	(add-to-list 'load-path project)))
+
+;; (require 'init-package)
 ;; (defun init--install-packages ()
 ;;   (packages-install
 ;;    '(magit
