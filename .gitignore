@@ -15,4 +15,5 @@ emms
 .yas-compiled-snippets.el
 .cask
 /eshell
+/lisp/.tern-port
 /tmp

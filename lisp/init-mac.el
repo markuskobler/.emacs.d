@@ -21,15 +21,17 @@
         ns-command-modifier 'super
         ns-function-modifier 'hyper)
   
-  (defun osx-copy ()
-    (shell-command-to-string "pbpaste"))
-  (setq interprogram-paste-function 'osx-copy)
+  ;; (defun osx-copy ()
+  ;;   (shell-command-to-string "pbpaste"))
+  ;; (setq interprogram-paste-function 'osx-copy)
   
-  (defun osx-paste (text &optional push)
-    (let ((process-connection-type nil)
-	  (proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-      (process-send-string proc text)
-      (process-send-eof proc)))
-  (setq interprogram-cut-function 'osx-paste))
+  ;; (defun osx-paste (text &optional push)
+  ;;   (let ((process-connection-type nil)
+  ;;         (proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+  ;;     (process-send-string proc text)
+  ;;     (process-send-eof proc)))
+  ;; (setq interprogram-cut-function 'osx-paste)
+
+  )
 
 (provide 'init-mac)

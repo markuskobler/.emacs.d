@@ -54,6 +54,8 @@
    js2-mode
    ac-js2
    js-doc
+   tern
+   tern-auto-complete
    jss
    nodejs-repl
    markdown-mode
@@ -70,7 +72,7 @@
                init-markdown
                init-eshell
                init-tramp
-               init-js
+               init-javascript
                init-go))
     (funcall 'require r)))
 
