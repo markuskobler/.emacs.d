@@ -62,12 +62,54 @@
 
 (global-subword-mode 1)
 
-(setq gc-cons-threshold 20000000)
+(setq redisplay-dont-pause t
+      scroll-margin 1
+      scroll-step 1
+      scroll-conservatively 10000
+      scroll-preserve-screen-position 1)
+
+(setq mouse-wheel-follow-mouse 't)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 (setq uniquify-strip-common-suffix t)
 (setq uniquify-after-kill-buffer-p t)
+
+(use-package ido-ubiquitous
+  :init (ido-ubiquitous-mode 1))
+(use-package ido-vertical-mode
+  :init (progn
+          (ido-vertical-mode 1)
+          (setq ido-max-prospects 5)))
+(use-package idomenu
+  :bind (("C-c i" . idomenu))
+  :config (setq imenu-auto-rescan t))
+(use-package flx
+  :init
+  (progn
+    (setq gc-cons-threshold 20000000)
+    (use-package flx-ido
+      :init
+      (flx-ido-mode 1))))
+
+(use-package sass-mode
+  :mode ("\\.scss\\'" . scss-mode)
+  :config
+  (progn
+    (put 'scss-sass-command 'safe-local-variable 'stringp)
+    (put 'css-indent-offset 'safe-local-variable 'integerp)
+    (put 'scss-compile-at-save 'safe-local-variable 'booleanp)))
+
+(use-package web-mode
+  :mode ("\\.html\\'" . web-mode))
+
+(when (window-system)
+  (require 'git-gutter-fringe))
+
+(global-git-gutter-mode +1)
+(setq-default indicate-buffer-boundaries 'left)
+(setq-default indicate-empty-lines +1)
 
 ;; Represent undo-history as an actual tree (visualize with C-x u)
 ;;(setq undo-tree-mode-lighter "")

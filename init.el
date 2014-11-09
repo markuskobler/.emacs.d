@@ -9,6 +9,9 @@
   (expand-file-name "lisp" user-emacs-directory))
 (add-to-list 'load-path base-path)
 
+(make-directory
+ (setq tmp-local-dir (expand-file-name "tmp" user-emacs-directory)) t)
+
 (dolist (project (directory-files base-path t "\\w+"))
   (when (file-directory-p project)
 	(add-to-list 'load-path project)))
@@ -25,7 +28,6 @@
 (install-missing-packages
  '(ido-ubiquitous
    dired-details
-   ansible
    paredit
    auto-complete
    visual-regexp
@@ -35,29 +37,42 @@
    git-blame
    git-gutter
    multiple-cursors
+   ido-vertical-mode
+   idomenu
+   flx
+   flx-ido
    flycheck
    go-mode
-   gotest
    go-autocomplete
+   go-eldoc
+   gotest
    go-errcheck
-   js3-mode
-   flyspell-lazy))
+   sass-mode
+   web-mode
+   json-mode
+   flymake-json
+   js2-mode
+   ac-js2
+   js-doc
+   jss
+   nodejs-repl
+   markdown-mode
+   flyspell-lazy
+   web-beautify
+   ansible))
 
 (progn
   (dolist (r '(init-dired
+               init-recentf
+               init-ansi
                init-multiple-cursors
+               init-emacs-lisp
+               init-markdown
+               init-eshell
+               init-tramp
+               init-js
                init-go))
     (funcall 'require r)))
-
-
-;; (eval-after-load "multiple-cursors" '(require 'multiple-cursors))
-
-;; (eval-after-load 'magit             '(require 'init-magit))
-
-;; (autoload 'flycheck-mode "init-flycheck" nil t)
-;; (autoload 'auto-complete-mode "auto-complete" nil t)
-;; (autoload 'magit-status "magit")
-;; (autoload 'dired-jump "dired")
 
 (when *is-mac*
   (require 'init-mac))
