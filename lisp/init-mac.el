@@ -1,7 +1,6 @@
 ;;(require-package 'exec-path-from-shell)
 
 (setq default-directory (expand-file-name "~/"))
-(setq ns-function-modifier 'control)  
 
 (setq system-name (car (split-string system-name "\\.")))
 
@@ -17,6 +16,10 @@
 (setq ispell-program-name "/usr/local/bin/aspell")
 
 (unless *is-cocoa*
+
+  (setq ns-function-modifier 'control
+        ns-command-modifier 'super
+        ns-function-modifier 'hyper)
   
   (defun osx-copy ()
     (shell-command-to-string "pbpaste"))

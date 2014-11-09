@@ -60,12 +60,14 @@
 ;; Show me empty lines after buffer end
 (set-default 'indicate-empty-lines t)
 
-;; Easily navigate sillycased words
 (global-subword-mode 1)
 
 (setq gc-cons-threshold 20000000)
 
-;; (setq uniquify-buffer-name-style 'forward)
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-strip-common-suffix t)
+(setq uniquify-after-kill-buffer-p t)
 
 ;; Represent undo-history as an actual tree (visualize with C-x u)
 ;;(setq undo-tree-mode-lighter "")

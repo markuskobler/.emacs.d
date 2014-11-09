@@ -1,10 +1,9 @@
 ;;; -*- lexical-binding: t -*-
+
+(setq inhibit-startup-message t)
 (progn
   (dolist (mode '(menu-bar-mode tool-bar-mode scroll-bar-mode))
     (when (fboundp mode) (funcall mode -1))))
-
-(setq inhibit-startup-message t
-      initial-buffer-choice t)
 
 (defconst base-path
   (expand-file-name "lisp" user-emacs-directory))
@@ -18,38 +17,38 @@
   (unless (server-running-p)
     (server-start)))
 
-(defconst *is-mac*   (eq system-type 'darwin)              "Is macos")
-(defconst *is-cocoa* (and *is-mac* (eq window-system 'ns)) "Is cocoa")
+(defconst *is-mac*   (eq system-type 'darwin)              "is macos")
+(defconst *is-cocoa* (and *is-mac* (eq window-system 'ns)) "is cocoa")
 
 (require 'init-package)
 
-;; (defun init--install-packages ()
-;;   (packages-install
-;;    '(magit
-;;      magit-filenotify
-;;      magit-find-file
-;;      git-blame
-;;      git-gutter
-;;      paredit
-;;      auto-complete
-;;      multiple-cursors
-;;      visual-regexp
-;;      flycheck
-;;      go-mode
-;;      gotest
-;;      go-autocomplete
-;;      go-errcheck
-;;      js3-mode
-;;      flyspell-lazy)))
+(install-missing-packages
+ '(ido-ubiquitous
+   dired-details
+   ansible
+   paredit
+   auto-complete
+   visual-regexp
+   magit
+   magit-filenotify
+   magit-find-file
+   git-blame
+   git-gutter
+   multiple-cursors
+   flycheck
+   go-mode
+   gotest
+   go-autocomplete
+   go-errcheck
+   js3-mode
+   flyspell-lazy))
 
-;; (condition-case nil
-;;     (init--install-packages)
-;;   (error
-;;    (package-refresh-contents)
-;;    (init--install-packages)))
+(progn
+  (dolist (r '(init-dired
+               init-multiple-cursors
+               init-go))
+    (funcall 'require r)))
 
-;; (require 'uniquify)
-;; (setq uniquify-buffer-name-style 'forward)
 
 ;; (eval-after-load "multiple-cursors" '(require 'multiple-cursors))
 
