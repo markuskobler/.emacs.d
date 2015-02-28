@@ -1,5 +1,5 @@
 (use-package go-mode
-  :mode ("\\.go$" . go-mode)
+  :mode ("\\.go\\'" . go-mode)
   :init
   (progn
     (use-package auto-complete)
@@ -13,7 +13,12 @@
                 (auto-complete-mode)
                 (go-eldoc-setup)
                 (add-hook 'before-save-hook 'gofmt-before-save)
-                (setq tab-width 4)))))
+                (setq tab-width 4)
+
+                (let ((oracle (concat (getenv "GOPATH") "/src/code.google.com/p/go.tools/cmd/oracle/oracle.el")))
+                  (when (file-exists-p oracle)
+                    (load oracle)
+                    (go-oracle-mode)))))))
 
 (setq gofmt-command "goimports")
 

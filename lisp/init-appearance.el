@@ -2,14 +2,17 @@
     (add-to-list 'initial-frame-alist '(font . "Source Code Pro"))
     (add-to-list 'default-frame-alist '(font . "Source Code Pro")))
 
-(setq visible-bell t
-      font-lock-maximum-decoration t
+(setq font-lock-maximum-decoration t
       color-theme-is-global t
       truncate-partial-width-windows nil
       line-number-mode t
       column-number-mode t
       fill-column 80
       redisplay-dont-pause t)
+
+;; ignore for now
+;; (setq visible-bell t)
+(setq ring-bell-function 'ignore)
 
 (global-hl-line-mode 1)
 (show-paren-mode 1)

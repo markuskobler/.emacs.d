@@ -30,4 +30,19 @@
 
 ;;(global-set-key (kbd "C-c C-t") 'run-go-tests)
 
+;; Remove stupid colour palette
+(global-set-key (kbd "s-C") 'ns-copy-including-secondary)
+
+;; ignore mouse wheel swipes
+(global-set-key [wheel-left] 'ignore)
+(global-set-key [wheel-right] 'ignore)
+(global-set-key [double-wheel-up] 'ignore)
+(global-set-key [double-wheel-down] 'ignore)
+(global-set-key [double-wheel-left] 'ignore)
+(global-set-key [double-wheel-right] 'ignore)
+(global-set-key [triple-wheel-up] 'ignore)
+(global-set-key [triple-wheel-down] 'ignore)
+(global-set-key [triple-wheel-left] 'ignore)
+(global-set-key [triple-wheel-right] 'ignore)
+
 (provide 'init-keybindings)

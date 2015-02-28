@@ -60,6 +60,7 @@
    nodejs-repl
    markdown-mode
    flyspell-lazy
+   dockerfile-mode
    web-beautify
    ansible))
 
@@ -73,7 +74,11 @@
                init-eshell
                init-tramp
                init-javascript
-               init-go))
+               init-web
+               init-css
+               init-go
+               init-rust
+               init-docker))
     (funcall 'require r)))
 
 (when *is-mac*
@@ -88,3 +93,5 @@
 
 (when after-init-time
   (run-hooks 'after-init-hook))
+(put 'erase-buffer 'disabled nil)
+(put 'downcase-region 'disabled nil)

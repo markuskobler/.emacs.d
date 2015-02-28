@@ -60,7 +60,7 @@
 ;; Show me empty lines after buffer end
 (set-default 'indicate-empty-lines t)
 
-(global-subword-mode 1)
+(global-subword-mode nil)
 
 (setq redisplay-dont-pause t
       scroll-margin 1
