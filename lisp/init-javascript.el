@@ -87,7 +87,7 @@
     (setq-default jsx-strict-missing-semi-warning nil)
     (setq-default jsx-strict-trailing-comma-warning nil)
     (setq-default jsx-strict-inconsistent-return-warning nil)
-    (setq-default jsx-bounce-indent-p nil)
+;;    (setq-default jsx-bounce-indent-p nil)
 
     (add-hook 'jsx-mode-hook
               (lambda ()

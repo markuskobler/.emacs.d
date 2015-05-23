@@ -3,16 +3,24 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        dired-unmark-backward
+        go-mode-insert-and-indent
+        ignore
         indent-for-tab-command
         paredit-forward-delete
         paredit-kill
         sgml-slash
         tern-ac-dot-complete
+        yaml-electric-backspace
+        yaml-electric-dash-and-dot
         ))
 
 (setq mc/cmds-to-run-once
       '(
         js2-mode-show-node
         kill-region
+        markdown-exdent-or-delete
+        mouse-save-then-kill
         mouse-set-region
+        save-buffers-kill-emacs
         ))
