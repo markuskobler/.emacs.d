@@ -78,6 +78,7 @@
                init-css
                init-go
                init-rust
+               init-toml
                init-docker))
     (funcall 'require r)))
 
