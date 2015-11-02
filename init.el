@@ -47,7 +47,8 @@
    go-eldoc
    gotest
    go-errcheck
-   sass-mode
+   scss-mode
+   rainbow-mode
    web-mode
    json-mode
    flymake-json
@@ -60,8 +61,15 @@
    nodejs-repl
    markdown-mode
    flyspell-lazy
+   docker
+   docker-tramp
    dockerfile-mode
    web-beautify
+   exec-path-from-shell
+   flycheck-rust
+   rust-mode
+   yaml-mode
+   toml-mode
    ansible))
 
 (progn
