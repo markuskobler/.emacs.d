@@ -3,6 +3,7 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        company-indent-or-complete-common
         dired-unmark-backward
         go-mode-insert-and-indent
         ignore

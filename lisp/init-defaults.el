@@ -93,17 +93,6 @@
       :init
       (flx-ido-mode 1))))
 
-(use-package sass-mode
-  :mode ("\\.scss\\'" . scss-mode)
-  :config
-  (progn
-    (put 'scss-sass-command 'safe-local-variable 'stringp)
-    (put 'css-indent-offset 'safe-local-variable 'integerp)
-    (put 'scss-compile-at-save 'safe-local-variable 'booleanp)))
-
-(use-package web-mode
-  :mode ("\\.html\\'" . web-mode))
-
 (when (window-system)
   (require 'git-gutter-fringe))
 

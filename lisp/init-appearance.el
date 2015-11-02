@@ -14,7 +14,7 @@
 ;; (setq visible-bell t)
 (setq ring-bell-function 'ignore)
 
-(global-hl-line-mode 1)
+;;(global-hl-line-mode 1)
 (show-paren-mode 1)
 
 (setq custom-theme-directory
@@ -31,7 +31,11 @@
 
 (defun load-solarized ()
   (load-theme 'solarized-dark t))
-(add-hook 'after-init-hook 'load-solarized)
+
+(defun load-afternoon ()
+  (load-theme 'afternoon t))
+
+(add-hook 'after-init-hook 'load-afternoon)
 
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))
