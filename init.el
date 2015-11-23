@@ -52,6 +52,7 @@
    rainbow-mode
    web-mode
    json-mode
+   jsx-mode
    flymake-json
    js2-mode
    ac-js2

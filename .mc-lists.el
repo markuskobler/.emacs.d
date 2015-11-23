@@ -18,6 +18,7 @@
 
 (setq mc/cmds-to-run-once
       '(
+        handle-switch-frame
         js2-mode-show-node
         kill-region
         markdown-exdent-or-delete

@@ -2,6 +2,8 @@
   :mode (("\\.js\\'" . js2-mode))
   :config
   (progn
+    (use-package flycheck)
+    
     ;; Use lambda for anonymous functions
     (font-lock-add-keywords
      'js2-mode `(("\\(function\\) *("
@@ -32,6 +34,9 @@
 
     (add-hook 'js2-mode-hook
               (lambda ()
+                (flycheck-mode t)
+                (flycheck-disable-checker 'javascript-eslint)
+
                 (setq js2-highlight-level 1
 
                       js2-consistent-level-indent-inner-bracket-p nil
@@ -119,11 +124,14 @@
 
 (use-package json-mode
   :mode (("\\.json\\'" . json-mode)
-         ("\\.jshintrc\\'" . json-mode))
+         ("\\.jshintrc\\'" . json-mode)
+         ("\\.eslintrc\\'" . json-mode)
+         ("\\.jscsrc\\'" . json-mode))
   :config
   (progn
     (add-hook 'json-mode-hook
               (lambda ()
+                (flycheck-mode t)
                 (setq show-trailing-whitespace t)
                 (setq js-indent-level 2)))))
 
