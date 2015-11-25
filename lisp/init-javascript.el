@@ -3,7 +3,7 @@
   :config
   (progn
     (use-package flycheck)
-    
+
     ;; Use lambda for anonymous functions
     (font-lock-add-keywords
      'js2-mode `(("\\(function\\) *("
@@ -47,6 +47,7 @@
 
                       show-trailing-whitespace t)
 
+                (add-hook 'before-save-hook 'delete-trailing-whitespace)
                 ;; (my-paredit-js)
                 ;; (define-key js2-mode-map "{" 'paredit-open-curly)
                 ;; (define-key js2-mode-map "}" 'paredit-close-curly-and-newline)
@@ -105,6 +106,8 @@
                       js2-show-parse-errors nil
 
                       show-trailing-whitespace t)
+
+                (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
                 ;; (my-paredit-js)
                 ;; (define-key jsx-mode-map "{" 'paredit-open-curly)

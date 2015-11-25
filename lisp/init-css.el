@@ -18,8 +18,7 @@
     (add-hook 'scss-mode-hook
               (lambda ()
                 (rainbow-mode t)
-                (flymake-mode t)
+                (flycheck-mode t)
                 (add-hook 'before-save-hook 'delete-trailing-whitespace)))))
 
 (provide 'init-css)
-;;; init-css.el ends here
