@@ -9,6 +9,7 @@
     (use-package go-flycheck)
     (add-hook 'go-mode-hook
               (lambda ()
+                (setenv "GO15VENDOREXPERIMENT" "1")
                 (setq truncate-lines nil)
                 (auto-complete-mode)
                 (go-eldoc-setup)
