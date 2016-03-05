@@ -42,6 +42,7 @@
    flx
    flx-ido
    flycheck
+   flycheck-pos-tip
    go-mode
    go-autocomplete
    go-eldoc
@@ -51,6 +52,7 @@
    rainbow-mode
    web-mode
    json-mode
+   jsx-mode
    flymake-json
    js2-mode
    ac-js2
@@ -97,6 +99,9 @@
 (require 'init-defaults)
 (require 'init-appearance)
 (require 'init-keybindings)
+
+(with-eval-after-load 'flycheck
+  (flycheck-pos-tip-mode))
 
 (setq custom-file (concat base-path "custom.el"))
 (load custom-file 'noerror)
