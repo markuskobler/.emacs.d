@@ -3,6 +3,8 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        c-electric-paren
+        c-electric-semi&comma
         company-indent-or-complete-common
         dired-unmark-backward
         go-mode-insert-and-indent
@@ -18,10 +20,12 @@
 
 (setq mc/cmds-to-run-once
       '(
+        handle-switch-frame
         js2-mode-show-node
         kill-region
         markdown-exdent-or-delete
         mouse-save-then-kill
         mouse-set-region
+        paredit-forward-slurp-sexp
         save-buffers-kill-emacs
         ))

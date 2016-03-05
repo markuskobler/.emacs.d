@@ -2,6 +2,8 @@
     (add-to-list 'initial-frame-alist '(font . "Source Code Pro"))
     (add-to-list 'default-frame-alist '(font . "Source Code Pro")))
 
+(set-face-attribute 'default nil :height 100)
+
 (setq font-lock-maximum-decoration t
       color-theme-is-global t
       truncate-partial-width-windows nil
@@ -25,7 +27,8 @@
   (when (file-directory-p path)
     (add-to-list 'custom-theme-load-path path)))
 
-;;(load-theme 'default-black t)
+(defun load-default-black ()
+  (load-theme 'default-black t))
 
 (setq solarized-high-contrast-mode-line t)
 
