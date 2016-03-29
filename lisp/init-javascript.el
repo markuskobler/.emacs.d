@@ -109,10 +109,6 @@
 
                 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-                ;; (my-paredit-js)
-                ;; (define-key jsx-mode-map "{" 'paredit-open-curly)
-                ;; (define-key jsx-mode-map "}" 'paredit-close-curly-and-newline)
-
                 (define-key jsx-mode-map [(return)]
                   '(lambda()
                      (interactive)

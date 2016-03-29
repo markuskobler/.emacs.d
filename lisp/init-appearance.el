@@ -2,7 +2,7 @@
     (add-to-list 'initial-frame-alist '(font . "Source Code Pro"))
     (add-to-list 'default-frame-alist '(font . "Source Code Pro")))
 
-(set-face-attribute 'default nil :height 100)
+;; (set-face-attribute 'default nil :height 100)
 
 (setq font-lock-maximum-decoration t
       color-theme-is-global t
