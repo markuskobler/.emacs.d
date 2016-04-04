@@ -1,8 +1,11 @@
+(defconst *is-linux* (eq system-type 'gnu/linux) "is linux")
+
 (when (member "Source Code Pro" (font-family-list))
     (add-to-list 'initial-frame-alist '(font . "Source Code Pro"))
     (add-to-list 'default-frame-alist '(font . "Source Code Pro")))
 
-;; (set-face-attribute 'default nil :height 100)
+(when *is-linux*
+  (set-face-attribute 'default nil :height 95))
 
 (setq font-lock-maximum-decoration t
       color-theme-is-global t

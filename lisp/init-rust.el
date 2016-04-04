@@ -2,6 +2,9 @@
   :mode ("\\.rs\\'" . rust-mode)
   :init
   (progn
+    (setq racer-rust-src-path "~/code/markus/code/vendor/rust/src/")
+    (setq company-tooltip-align-annotations t)
+
     (use-package racer)
     (use-package flycheck)
     (use-package flycheck-rust)
