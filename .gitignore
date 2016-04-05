@@ -14,6 +14,7 @@ emms
 .DS_Store
 .yas-compiled-snippets.el
 .cask
+.mc-lists.el
 /eshell
 /lisp/.tern-port
 /tmp

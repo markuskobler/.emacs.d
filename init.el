@@ -42,7 +42,6 @@
    magit-filenotify
    magit-find-file
    git-blame
-   git-gutter
    multiple-cursors
    ido-vertical-mode
    idomenu
@@ -50,7 +49,7 @@
    flx-ido
    flycheck
    flycheck-pos-tip
-   go-mode
+   go-mode  
    go-autocomplete
    go-eldoc
    gotest
@@ -77,8 +76,10 @@
    exec-path-from-shell
    flycheck-rust
    rust-mode
+   ruby-mode
    yaml-mode
    toml-mode
+   puppet-mode
    afternoon-theme
    ansible))
 
@@ -97,7 +98,8 @@
                init-go
                init-rust
                init-toml
-               init-docker))
+               init-docker
+               init-nix))
     (funcall 'require r)))
 
 (when *is-mac*

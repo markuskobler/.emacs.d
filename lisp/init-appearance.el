@@ -41,7 +41,8 @@
 (defun load-afternoon ()
   (load-theme 'afternoon t))
 
-(add-hook 'after-init-hook 'load-afternoon)
+(add-hook 'after-init-hook 'load-solarized)
+;; (add-hook 'after-init-hook 'load-afternoon)
 
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))
