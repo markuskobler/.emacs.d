@@ -15,6 +15,7 @@ emms
 .yas-compiled-snippets.el
 .cask
 .mc-lists.el
+lispcustom.el
 /eshell
 /lisp/.tern-port
 /tmp
