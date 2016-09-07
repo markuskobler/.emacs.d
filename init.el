@@ -83,6 +83,8 @@
    afternoon-theme
    ansible))
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 (progn
   (dolist (r '(init-dired
                init-recentf
