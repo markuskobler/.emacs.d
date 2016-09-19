@@ -11,9 +11,8 @@
               (lambda ()
                 (setq gofmt-command "goimports")
 
-                (local-set-key (kbd "M-.") 'godef-jump))
-
                 (go-set-project)
+	      
                 (auto-complete-mode)
                 (go-eldoc-setup)
                 (add-hook 'before-save-hook 'gofmt-before-save)

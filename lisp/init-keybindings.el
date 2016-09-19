@@ -29,6 +29,7 @@
 ;;(global-set-key [remap goto-line] 'goto-line-with-feedback)
 
 ;;(global-set-key (kbd "C-c C-t") 'run-go-tests)
+(local-set-key (kbd "M-.") 'godef-jump)
 
 ;; Remove stupid colour palette
 (global-set-key (kbd "s-C") 'ns-copy-including-secondary)

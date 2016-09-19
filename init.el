@@ -49,7 +49,7 @@
    flx-ido
    flycheck
    flycheck-pos-tip
-   go-mode  
+   go-mode
    go-autocomplete
    go-eldoc
    gotest
@@ -83,7 +83,7 @@
    afternoon-theme
    ansible))
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+; (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (progn
   (dolist (r '(init-dired
@@ -101,7 +101,8 @@
                init-rust
                init-toml
                init-docker
-               init-nix))
+               init-nix
+               init-aspell))
     (funcall 'require r)))
 
 (when *is-mac*
