@@ -1,4 +1,5 @@
-(defconst *is-linux* (eq system-type 'gnu/linux) "is linux")
+(defconst *is-linux*
+  (eq system-type 'gnu/linux) "is linux")
 
 (when (member "Source Code Pro" (font-family-list))
     (add-to-list 'initial-frame-alist '(font . "Source Code Pro"))
@@ -30,23 +31,45 @@
   (when (file-directory-p path)
     (add-to-list 'custom-theme-load-path path)))
 
-(defun load-default-black ()
-  (load-theme 'default-black t))
+;; (defun load-default-black ()
+;;   (load-theme 'default-black t))
 
-(setq solarized-high-contrast-mode-line t)
+;; (setq solarized-high-contrast-mode-line t)
 
-(defun load-solarized ()
-  (load-theme 'solarized-dark t))
+;; (defun load-solarized ()
+;;   (load-theme 'solarized-dark t))
 
-(defun load-afternoon ()
-  (load-theme 'afternoon t))
+;; (defun load-afternoon ()
+;;   (load-theme 'afternoon t))
 
-(add-hook 'after-init-hook 'load-solarized)
+;; (add-hook 'after-init-hook 'load-solarized)
 ;; (add-hook 'after-init-hook 'load-afternoon)
 
 (when window-system
   (setq frame-title-format '(buffer-file-name "%f" ("%b")))
   (tooltip-mode -1)
   (blink-cursor-mode -1))
+
+
+(use-package darkokai-theme
+  :ensure
+  :config
+  (progn
+    (load-theme 'darkokai t)))
+
+
+(use-package git-gutter-fringe+
+  :ensure
+  :config
+  (progn
+    (global-git-gutter+-mode)))
+
+;;(when (window-system)
+;; (require 'git-gutter-fringe))
+
+;;(global-git-gutter-mode +1)
+;;(setq-default indicate-buffer-boundaries 'left)
+;;(setq-default indicate-empty-lines +1)
+
 
 (provide 'init-appearance)

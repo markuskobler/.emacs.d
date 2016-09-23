@@ -4,7 +4,6 @@
     (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
     (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)))
 
-
 (defadvice ansi-term (after advise-ansi-term-coding-system activate)
   (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
 

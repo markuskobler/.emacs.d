@@ -1,4 +1,5 @@
 (use-package css-mode
+  :ensure
   :mode (("\\.css\\'" . css-mode))
   :config
   (progn
@@ -9,6 +10,7 @@
                 (add-hook 'before-save-hook 'delete-trailing-whitespace)))))
 
 (use-package scss-mode
+  :ensure
   :mode (("\\.scss\\'" . scss-mode))
   :config
   (progn
