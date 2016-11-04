@@ -1,5 +1,5 @@
 (use-package ruby-mode
-  :mode (("\\.rb$" . ruby-mode))
+  :mode (("\\.rb\\'" . ruby-mode))
   :config
   (progn
     (add-hook 'ruby-mode

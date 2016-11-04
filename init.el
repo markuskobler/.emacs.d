@@ -32,11 +32,12 @@
   (dolist (r '(init-multiple-cursors
                init-helm
                init-dired
-               ;; init-recentf
+               init-recentf
                init-aspell
+               init-projectile
 ;;               init-ansi
 ;;               init-emacs-lisp
-;;               init-markdown
+               init-markdown
 ;;               init-eshell
 ;;               init-tramp
                init-web
@@ -44,7 +45,7 @@
                init-javascript
                init-go
                init-rust
-;;               init-toml
+               init-toml
 ;;               init-docker
                init-nix))
     (funcall 'require r)))

@@ -33,9 +33,6 @@
 ;;(global-set-key (kbd "C-c C-t") 'run-go-tests)
 (local-set-key (kbd "M-.") 'godef-jump)
 
-;; Remove stupid colour palette
-;; (global-set-key (kbd "s-C") 'ns-copy-including-secondary)
-
 ;; multiple-cursors
 (global-set-key (kbd "C->")     'mc/mark-next-like-this)
 (global-set-key (kbd "C-<")     'mc/mark-previous-like-this)
