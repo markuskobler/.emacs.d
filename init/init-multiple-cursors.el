@@ -1,5 +1,4 @@
 (use-package multiple-cursors
-  :ensure
-  :init)
+  :ensure t)
 
 (provide 'init-multiple-cursors)

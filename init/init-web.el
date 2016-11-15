@@ -1,5 +1,6 @@
 (use-package web-mode
-  :mode (("\\.html\\'" . web-mode))
+  :ensure t
+  :mode "\\.html\\'"
   :config
   (progn
     (setq web-mode-markup-indent-offset 2)

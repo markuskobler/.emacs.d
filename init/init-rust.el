@@ -1,6 +1,7 @@
 (defconst *is-mac*   (eq system-type 'darwin) "Is macos")
 
 (use-package rust-mode
+  :ensure
   :mode ("\\.rs\\'" . rust-mode)
   :init
   (progn
