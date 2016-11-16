@@ -60,11 +60,11 @@
                init-css
                init-javascript
                init-json
+               init-ruby
                ;; init-go
                ;; init-rust
                ;; init-docker
                ;; init-nix
-               ;; init-ruby
                ))
     (funcall 'require r)))
 
