@@ -1,6 +1,3 @@
-(defconst *is-linux*
-  (eq system-type 'gnu/linux) "is linux")
-
 (when (member "Source Code Pro" (font-family-list))
     (add-to-list 'initial-frame-alist '(font . "Source Code Pro"))
     (add-to-list 'default-frame-alist '(font . "Source Code Pro")))
