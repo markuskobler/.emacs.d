@@ -12,7 +12,7 @@
 
 (eval-when-compile
   (setq inhibit-startup-message t)
-  
+
   (dolist (m '(menu-bar-mode tool-bar-mode scroll-bar-mode))
     (when (fboundp m) (funcall m -1)))
 
@@ -23,7 +23,7 @@
     (eq system-type 'darwin) "is macos")
 
   (defconst *is-cocoa*
-    (and *is-mac* (eq window-system 'ns)) "is cocoa")  
+    (and *is-mac* (eq window-system 'ns)) "is cocoa")
 
   (defvar use-package-verbose t)
   (require 'use-package))
@@ -56,6 +56,7 @@
                ;; init-emacs-lisp
                ;; init-eshell
                ;; init-tramp
+               init-git
                init-web
                init-css
                init-javascript

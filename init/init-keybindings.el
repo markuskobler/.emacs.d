@@ -12,6 +12,7 @@
 (global-set-key (kbd "C-c p h") 'helm-projectile)
 (global-set-key (kbd "C-c p p") 'helm-projectile-switch-project)
 (global-set-key (kbd "C-c p f") 'helm-projectile-find-file)
+(global-set-key (kbd "C-c p s g") 'helm-projectile-grep)
 
 ;; multiple-cursors
 (global-set-key (kbd "C->")     'mc/mark-next-like-this)
