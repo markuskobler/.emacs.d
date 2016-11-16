@@ -1,14 +1,11 @@
-(require 'dired)
-(require 'dired-details)
-(setq-default dired-details-hidden-string "-- ")
-(dired-details-install)
-
-(defadvice dired-do-rename
-    (after revert-buffer-after-rename activate)
-  (revert-buffer))
-
-(defadvice dired-create-directory
-    (after revert-buffer-after-create activate)
-  (revert-buffer))
+(use-package dired-details
+  :ensure t
+  :config
+  (setq-default dired-details-hidden-string "-- ")
+  
+  :init
+  (require 'dired-details)
+  
+  (dired-details-install))
 
 (provide 'init-dired)

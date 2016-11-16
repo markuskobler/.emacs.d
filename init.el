@@ -4,14 +4,22 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
+(require 'package)
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+	("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 
+;; Bootstrap `use-package'
 (eval-when-compile
   (setq inhibit-startup-message t)
+  
+  (dolist (m '(menu-bar-mode tool-bar-mode scroll-bar-mode))
+    (when (fboundp m) (funcall m -1)))
 
-  (progn
-    (dolist (m '(menu-bar-mode tool-bar-mode scroll-bar-mode))
-      (when (fboundp m) (funcall m -1))))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
 
   (defvar use-package-verbose t)
   (require 'use-package))
@@ -37,7 +45,7 @@
 (progn
   (dolist (r '(init-helm
                ;; init-multiple-cursors
-               ;; init-dired
+               init-dired
                ;; init-recentf
                ;; init-aspell
                ;; init-projectile
@@ -85,3 +93,17 @@
 ;; (dolist (project (directory-files base-path t "\\w+"))
 ;;   (when (file-directory-p project)
 ;;     (add-to-list 'load-path project)))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (git-gutter-fringe+ darkokai-theme helm use-package))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
