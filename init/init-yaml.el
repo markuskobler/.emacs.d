@@ -1,8 +1,7 @@
 (use-package yaml-mode
-  :ensure
+  :ensure t
   :mode (("\\.yml\\'" . yaml-mode))
   :config
-  (progn
-    (use-package yaml-tomato :ensure)))
+  (use-package yaml-tomato))
 
 (provide 'init-yaml)

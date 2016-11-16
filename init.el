@@ -10,42 +10,43 @@
 	("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 
-;; Bootstrap `use-package'
 (eval-when-compile
   (setq inhibit-startup-message t)
   
   (dolist (m '(menu-bar-mode tool-bar-mode scroll-bar-mode))
     (when (fboundp m) (funcall m -1)))
 
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
+  (defconst *is-linux*
+    (eq system-type 'gnu/linux) "is linux")
+
+  (defconst *is-mac*
+    (eq system-type 'darwin) "is macos")
+
+  (defconst *is-cocoa*
+    (and *is-mac* (eq window-system 'ns)) "is cocoa")  
 
   (defvar use-package-verbose t)
   (require 'use-package))
 
-(defconst *is-linux*
- (eq system-type 'gnu/linux) "is linux")
-
-(defconst *is-mac*
-  (eq system-type 'darwin) "is macos")
-
-(defconst *is-cocoa*
-  (and *is-mac* (eq window-system 'ns)) "is cocoa")
-
 (require 'bind-key)
 (require 'diminish nil t)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
 (progn
   (dolist (p '("init"))
     (add-to-list 'load-path
                  (expand-file-name p user-emacs-directory))))
 
+(require 'init-defaults)
 (require 'init-keybindings)
 
 (progn
   (dolist (r '(init-helm
-               ;; init-multiple-cursors
                init-dired
+               ;; init-multiple-cursors
                ;; init-recentf
                ;; init-aspell
                ;; init-projectile
@@ -55,9 +56,10 @@
                ;; init-emacs-lisp
                ;; init-eshell
                ;; init-tramp
-               ;; init-web
-               ;; init-css
-               ;; init-javascript
+               init-web
+               init-css
+               init-javascript
+               init-json
                ;; init-go
                ;; init-rust
                ;; init-docker
@@ -70,8 +72,6 @@
 
 ;; (when *is-mac*
 ;;   (require 'init-mac))
-
-;; (require 'init-defaults)
 
 ;; (with-eval-after-load 'flycheck
 ;;   (flycheck-pos-tip-mode))

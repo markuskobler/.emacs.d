@@ -11,13 +11,14 @@
       line-number-mode t
       column-number-mode t
       fill-column 80
-      redisplay-dont-pause t)
+      redisplay-dont-pause t
+      ring-bell-function nil)
 
-;; ignore for now
-;; (setq visible-bell t)
-(setq ring-bell-function 'ignore)
+(when window-system
+  (setq frame-title-format '(buffer-file-name "%f" ("%b")))
+  (tooltip-mode -1)
+  (blink-cursor-mode -1))
 
-;;(global-hl-line-mode 1)
 (show-paren-mode 1)
 
 (setq custom-theme-directory
@@ -28,45 +29,16 @@
   (when (file-directory-p path)
     (add-to-list 'custom-theme-load-path path)))
 
-;; (defun load-default-black ()
-;;   (load-theme 'default-black t))
-
-;; (setq solarized-high-contrast-mode-line t)
-
-;; (defun load-solarized ()
-;;   (load-theme 'solarized-dark t))
-
-;; (defun load-afternoon ()
-;;   (load-theme 'afternoon t))
-
-;; (add-hook 'after-init-hook 'load-solarized)
-;; (add-hook 'after-init-hook 'load-afternoon)
-
-(when window-system
-  (setq frame-title-format '(buffer-file-name "%f" ("%b")))
-  (tooltip-mode -1)
-  (blink-cursor-mode -1))
-
-
 (use-package darkokai-theme
-  :ensure
+  :ensure t
   :config
   (progn
     (load-theme 'darkokai t)))
 
-
 (use-package git-gutter-fringe+
-  :ensure
+  :ensure t
   :config
   (progn
     (global-git-gutter+-mode)))
-
-;;(when (window-system)
-;; (require 'git-gutter-fringe))
-
-;;(global-git-gutter-mode +1)
-;;(setq-default indicate-buffer-boundaries 'left)
-;;(setq-default indicate-empty-lines +1)
-
 
 (provide 'init-appearance)

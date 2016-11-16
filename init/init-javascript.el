@@ -59,9 +59,10 @@
                      ;;(indent-relative)
                      ))
 
-                (tern-mode t)
+                ;; (tern-mode t)
+                ;; (tern-ac-setup)
                 (auto-complete-mode)
-                (tern-ac-setup)))))
+                ))))
 
 (use-package jsx-mode
   :mode ("\\.jsx\\'" . jsx-mode)
@@ -116,23 +117,9 @@
                      ;;(indent-relative)
                      ))
 
-                (tern-mode t)
+                ;; (tern-mode t)
+                ;; (tern-ac-setup)
                 (auto-complete-mode)
-                (tern-ac-setup)))))
-
-
-(use-package json-mode
-  :mode (("\\.json\\'" . json-mode)
-         ("\\.jshintrc\\'" . json-mode)
-         ("\\.eslintrc\\'" . json-mode)
-         ("\\.jscsrc\\'" . json-mode))
-  :config
-  (progn
-    (add-hook 'json-mode-hook
-              (lambda ()
-                (flycheck-mode t)
-                (setq show-trailing-whitespace t)
-                (setq js-indent-level 2)))))
+                ))))
 
 (provide 'init-javascript)
-;;; init-javascript.el ends here
