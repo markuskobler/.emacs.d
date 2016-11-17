@@ -46,7 +46,8 @@
 (progn
   (dolist (r '(init-helm
                init-dired
-               ;; init-multiple-cursors
+               init-multiple-cursors
+               init-flycheck
                ;; init-recentf
                ;; init-aspell
                ;; init-projectile
@@ -62,6 +63,7 @@
                init-javascript
                init-json
                init-ruby
+               init-yaml
                ;; init-go
                ;; init-rust
                ;; init-docker

@@ -1,9 +1,8 @@
 (use-package js2-mode
+  :ensure t
   :mode (("\\.js\\'" . js2-mode))
   :config
   (progn
-    (use-package flycheck)
-
     ;; Use lambda for anonymous functions
     (font-lock-add-keywords
      'js2-mode `(("\\(function\\) *("
@@ -65,6 +64,7 @@
                 ))))
 
 (use-package jsx-mode
+  :ensure t
   :mode ("\\.jsx\\'" . jsx-mode)
   :config
   (progn
