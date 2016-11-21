@@ -64,6 +64,7 @@
                init-json
                init-ruby
                init-yaml
+               init-scala
                ;; init-go
                ;; init-rust
                ;; init-docker
