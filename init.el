@@ -168,7 +168,6 @@
   :ensure t
   :diminish eldoc-mode
   :init
-  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode))
 
 ;;
@@ -196,7 +195,9 @@
   :init
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
-
+;;
+;; web
+;;
 (use-package web-mode
   :ensure t
   :mode "\\.html\\'"
@@ -206,6 +207,17 @@
         web-mode-code-indent-offset 2)
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
+
+;;
+;; paredit
+;;
+(use-package paredit
+  :diminish paredit-mode
+  :init
+  (add-hook 'lisp-mode-hook 'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
+  (add-hook 'json-mode-hook 'paredit-mode))
 
 
 (progn
