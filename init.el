@@ -43,31 +43,183 @@
 (require 'init-defaults)
 (require 'init-keybindings)
 
+;;
+;; helm
+;;
+(use-package helm
+  :ensure t
+  :commands
+  (helm-get-sources helm-marked-candidates)
+  :init
+  (setq helm-autoresize-max-height 40
+        helm-autoresize-min-height 20
+        projectile-completion-system 'helm)
+
+  :config
+  (use-package helm-config)
+  (helm-projectile-on)
+  (helm-autoresize-mode 1)
+  (helm-mode 1)
+
+  :bind (("M-x" . helm-M-x)
+         ("C-x b" . helm-mini)
+         ("C-x C-f" . helm-find-files)))
+
+(use-package helm-projectile
+  :ensure t
+  :config
+  (projectile-global-mode)
+
+  :bind (("C-c p h" . helm-projectile)
+         ("C-c p p" . helm-projectile-switch-project)
+         ("C-c p f" . helm-projectile-find-file)
+         ("C-c p s g" . helm-projectile-grep)))
+
+;;
+;; flycheck
+;;
+(use-package flycheck
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-flycheck-mode)
+  (setq flycheck-display-errors-delay 0.3)
+  (setq-default flycheck-disabled-checkers
+                '(emacs-lisp-checkdoc html-tidy))
+
+  :config
+  (set-face-foreground 'flycheck-error "red")
+
+  :bind
+  ("C-c C-l" . flycheck-list-errors))
+
+;;
+;; dired
+;;
+(use-package dired-details
+  :ensure t
+  :init
+  (setq-default dired-details-hidden-string "-- ")
+  (let ((gls "/usr/local/bin/gls"))
+    (when (file-exists-p gls)
+            (setq insert-directory-program gls)))
+
+  :config
+  (require 'dired-details)
+  (dired-details-install))
+
+;;
+;; multiple-cursors
+;;
+(use-package multiple-cursors
+  :ensure t
+  :bind
+  (("C->"     . mc/mark-next-like-this)
+   ("C-<"     . mc/mark-previous-like-this)
+   ("C-c C-l" . mc/mark-all-like-this)))
+
+;;
+;; git
+;;
+(use-package magit
+  :ensure t
+  :bind
+  ("C-x m" . magit-status))
+
+;;
+;; toml
+;;
+(use-package toml-mode
+  :ensure t
+  :mode "\\.toml\\'")
+
+;;
+;; yaml
+;;
+(use-package yaml-mode
+  :ensure t
+  :mode "\\.yml\\'"
+  :config
+  (use-package yaml-tomato))
+
+(use-package json-mode
+  :ensure t
+  :mode ("\\.json\\'" "\\.jshintrc\\'" "\\.eslintrc\\'" "\\.jscsrc\\'")
+
+  :init
+  (setq show-trailing-whitespace t
+        js-indent-level 2)
+
+  :config
+  (add-hook 'json-mode-hook 'flycheck-mode)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
+
+;;
+;; Dockerfile
+;;
+(use-package dockerfile-mode
+  :ensure t
+  :mode "Dockerfile\\'")
+
+;;
+;; eldoc
+;;
+(use-package eldoc
+  :ensure t
+  :diminish eldoc-mode
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode))
+
+;;
+;; ruby
+;;
+(use-package ruby-mode
+  :ensure t
+  :mode "\\.rb\\'"
+  :init
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
+;;
+;; scala
+;;
+(use-package ensime
+  :ensure t
+  :init
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
+;;
+;; nix
+;;
+(use-package nix-mode
+  :mode "\\.nix\\'"
+  :init
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
+
+(use-package web-mode
+  :ensure t
+  :mode "\\.html\\'"
+  :init
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
+
+
 (progn
-  (dolist (r '(init-helm
-               init-dired
-               init-multiple-cursors
-               init-flycheck
-               ;; init-recentf
+  (dolist (r '(;; init-recentf
                ;; init-aspell
-               ;; init-projectile
-               ;; init-toml
                ;; init-markdown
                ;; init-ansi
                ;; init-emacs-lisp
-               ;; init-eshell
                ;; init-tramp
-               init-git
                init-web
                init-css
                init-javascript
-               init-json
-               init-ruby
-               init-yaml
-               init-scala
-               ;; init-go
+               init-go
                ;; init-rust
-               ;; init-docker
                ;; init-nix
                ))
     (funcall 'require r)))

@@ -1,19 +1,17 @@
-(defconst *is-mac*   (eq system-type 'darwin) "Is macos")
-
 (use-package rust-mode
-  :ensure
-  :mode ("\\.rs\\'" . rust-mode)
+  :ensure t
+  :mode "\\.rs\\'"
   :init
-  (progn
-    (setq racer-rust-src-path "~/code/markus/code/vendor/rust/src/")
-    (setq company-tooltip-align-annotations t)
+  (setq racer-rust-src-path "~/code/vendor/rust/src/")
+  (setq company-tooltip-align-annotations t)
 
-    (use-package racer)
+  (progn
+
+    (use-package racer :ensure t)
 
     (unless *is-mac*
       (lambda ()
-        (use-package flycheck)
-        (use-package flycheck-rust)
+        (use-package flycheck-rust :ensure t)
         (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
 
     (add-hook 'racer-mode-hook
