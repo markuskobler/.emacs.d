@@ -5,9 +5,9 @@
 (setq system-name (car (split-string system-name "\\.")))
 
 ;; fix the £/# on a GB keyboard
-;; (global-set-key (kbd "M-3")
-;;                 '(lambda()
-;;                    (interactive) (insert "#")))
+(global-set-key (kbd "M-3")
+                '(lambda()
+                   (interactive) (insert "#")))
 
 (setq ls-lisp-use-insert-directory-program t)
 (setq insert-directory-program "gls")

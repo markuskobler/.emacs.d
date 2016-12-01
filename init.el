@@ -207,6 +207,32 @@
         web-mode-code-indent-offset 2)
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
+;;
+;; go
+;;
+(use-package go-mode
+  :ensure t
+  :mode "\\.go\\'"
+  :init
+  (use-package auto-complete   :ensure t)
+  (use-package flycheck        :ensure t)
+  (use-package go-autocomplete :ensure t)
+  (use-package go-eldoc        :ensure t)
+  (use-package go-errcheck     :ensure t)
+  (use-package gotest          :ensure t)
+  (setq gofmt-command "goimports")
+
+  :config
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (go-set-project)
+
+              (flycheck-mode)
+              (auto-complete-mode)
+              (go-eldoc-setup)
+              (add-hook 'before-save-hook 'gofmt-before-save)
+              (setq tab-width 4))))
+
 
 ;;
 ;; paredit
@@ -227,19 +253,13 @@
                ;; init-ansi
                ;; init-emacs-lisp
                ;; init-tramp
+               ;; init-rust
                init-web
                init-css
-               init-javascript
-               init-go
-               ;; init-rust
-               ;; init-nix
-               ))
+               init-javascript))
     (funcall 'require r)))
 
 (require 'init-appearance)
-
-;; (when *is-mac*
-;;   (require 'init-mac))
 
 ;; (with-eval-after-load 'flycheck
 ;;   (flycheck-pos-tip-mode))
