@@ -1,6 +1,6 @@
 (use-package js2-mode
   :ensure t
-  :mode (("\\.js\\'" . js2-mode))
+  :mode "\\.js\\'"
   :config
   (progn
     ;; Use lambda for anonymous functions
@@ -34,7 +34,7 @@
     (add-hook 'js2-mode-hook
               (lambda ()
                 (flycheck-mode t)
-                (flycheck-disable-checker 'javascript-eslint)
+                ;(flycheck-disable-checker 'javascript-eslint)
 
                 (setq js2-highlight-level 1
 
