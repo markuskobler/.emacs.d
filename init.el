@@ -48,6 +48,10 @@
 (require 'init-keybindings)
 (require 'init-appearance)
 
+(when *is-mac*
+  (setenv "PATH" (concat (getenv "PATH") ":/Users/mkobler/.n/bin"))
+  (setq exec-path (append exec-path '("/Users/mkobler/.n/bin"))))
+
 ;;
 ;; helm
 ;;
@@ -78,7 +82,7 @@
   :bind (("C-c p h" . helm-projectile)
          ("C-c p p" . helm-projectile-switch-project)
          ("C-c p f" . helm-projectile-find-file)
-         ("C-c p s g" . helm-projectile-grep)))
+         ("C-c p g" . helm-projectile-grep)))
 
 ;;
 ;; flycheck
@@ -167,7 +171,7 @@
 ;;
 (use-package dockerfile-mode
   :ensure t
-  :mode "Dockerfile\\'")
+  :mode "Dockerfile")
 
 ;;
 ;; eldoc
@@ -256,6 +260,7 @@
 ;; paredit
 ;;
 (use-package paredit
+  :ensure t
   :diminish paredit-mode
   :init
   (add-hook 'lisp-mode-hook 'paredit-mode)
@@ -263,17 +268,73 @@
   (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
   (add-hook 'json-mode-hook 'paredit-mode))
 
+;;
+;; css/sass
+;;
+(use-package css-mode
+  :ensure t
+  :mode "\\.css\\'"
+  :config
+  (setq-default css-basic-offset 2)
+  (setq-default css-indent-offset 2)
+  :init
+  (add-hook 'css-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook 'delete-trailing-whitespace))))
+
+(use-package scss-mode
+  :ensure t
+  :mode "\\.scss\\'"
+  :config
+  (setq-default css-basic-offset 2)
+  (setq-default css-indent-offset 2)
+  (setq-default scss-compile-at-save nil)
+  :init
+  (add-hook 'scss-mode-hook
+            (lambda ()
+              (rainbow-mode t)
+              (flycheck-mode t)
+              (add-hook 'before-save-hook 'delete-trailing-whitespace))))
+
+;;
+;; js
+;;
+(use-package js2-mode
+  :ensure t
+  :mode (("\\.js\\'" . js2-mode)
+         ("\\.jsx\\'" . js2-jsx-mode))
+  :init
+  (setq js2-highlight-level 3
+        js2-strict-trailing-comma-warning nil
+        js2-strict-missing-semi-warning nil
+        js2-missing-semi-one-line-override t
+        js2-allow-rhino-new-expr-initializer nil
+        js2-include-node-externs t
+        js2-warn-about-unused-function-arguments t
+        js2-basic-offset 2)
+
+  (add-hook 'js2-mode-hook
+            (lambda ()
+              (subword-mode 1)
+              (diminish 'subword-mode)))
+
+  :config
+  (use-package tern
+    :ensure t
+    :diminish tern-mode
+    :init
+    (add-hook 'js2-mode-hook 'tern-mode)))
+
 (progn
-  (dolist (r '(;; init-recentf
-               ;; init-aspell
+  (dolist (r '(;; init-aspell
                ;; init-markdown
                ;; init-ansi
                ;; init-emacs-lisp
                ;; init-tramp
                ;; init-rust
                init-web
-               init-css
-               init-javascript))
+               ;;init-javascript
+               ))
     (funcall 'require r)))
 
 ;; (when after-init-time
