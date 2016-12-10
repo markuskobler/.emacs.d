@@ -40,8 +40,13 @@
     (add-to-list 'load-path
                  (expand-file-name p user-emacs-directory))))
 
+(setq custom-file
+      (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+
 (require 'init-defaults)
 (require 'init-keybindings)
+(require 'init-appearance)
 
 ;;
 ;; helm
@@ -91,6 +96,9 @@
 
   :bind
   ("C-c C-l" . flycheck-list-errors))
+
+;; (with-eval-after-load 'flycheck
+;;   (flycheck-pos-tip-mode))
 
 ;;
 ;; dired
@@ -233,6 +241,16 @@
               (add-hook 'before-save-hook 'gofmt-before-save)
               (setq tab-width 4))))
 
+;;
+;; R
+;;
+(use-package ess-site
+  :ensure ess
+  :functions poin-max
+  :mode ("\\.R\\'" . R-mode)
+  :commands R
+  :config
+  (add-hook 'R-mode-hook #'subword-mode))
 
 ;;
 ;; paredit
@@ -244,7 +262,6 @@
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
   (add-hook 'json-mode-hook 'paredit-mode))
-
 
 (progn
   (dolist (r '(;; init-recentf
@@ -259,20 +276,11 @@
                init-javascript))
     (funcall 'require r)))
 
-(require 'init-appearance)
-
-;; (with-eval-after-load 'flycheck
-;;   (flycheck-pos-tip-mode))
-
-;;(setq custom-file (concat base-path "custom.el"))
-;;(load custom-file 'noerror)
-
 ;; (when after-init-time
 ;;   (run-hooks 'after-init-hook))
 
 ;; (put 'erase-buffer 'disabled nil)
 ;; (put 'downcase-region 'disabled nil)
-
 
 ;; (make-directory
 ;;  (setq tmp-local-dir
@@ -281,17 +289,3 @@
 ;; (dolist (project (directory-files base-path t "\\w+"))
 ;;   (when (file-directory-p project)
 ;;     (add-to-list 'load-path project)))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (git-gutter-fringe+ darkokai-theme helm use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
