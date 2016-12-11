@@ -49,8 +49,9 @@
 (require 'init-appearance)
 
 (when *is-mac*
-  (setenv "PATH" (concat (getenv "PATH") ":/Users/mkobler/.n/bin"))
-  (setq exec-path (append exec-path '("/Users/mkobler/.n/bin"))))
+  (let ((p (concat (getenv "HOME") "/.n/bin")))
+    (setenv "PATH" (concat (getenv "PATH") ":" p))
+    (add-to-list 'exec-path p )))
 
 ;;
 ;; helm
