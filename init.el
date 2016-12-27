@@ -48,10 +48,18 @@
 (require 'init-keybindings)
 (require 'init-appearance)
 
+(let ((p (concat (getenv "HOME") "/bin")))
+  (setenv "PATH" (concat (getenv "PATH") ":" p))
+  (add-to-list 'exec-path p))
+
 (when *is-mac*
   (let ((p (concat (getenv "HOME") "/.n/bin")))
     (setenv "PATH" (concat (getenv "PATH") ":" p))
-    (add-to-list 'exec-path p )))
+    (add-to-list 'exec-path p)))
+
+(let ((p "/usr/local/bin"))
+  (setenv "PATH" (concat (getenv "PATH") ":" p))
+  (add-to-list 'exec-path p))
 
 ;;
 ;; helm
@@ -94,7 +102,9 @@
   (add-hook 'after-init-hook 'global-flycheck-mode)
   (setq flycheck-display-errors-delay 0.3)
   (setq-default flycheck-disabled-checkers
-                '(emacs-lisp-checkdoc html-tidy))
+                '(emacs-lisp-checkdoc
+                  html-tidy
+                  javascript-jshint))
 
   :config
   (set-face-foreground 'flycheck-error "red")
@@ -229,22 +239,27 @@
   :init
   (use-package auto-complete   :ensure t)
   (use-package flycheck        :ensure t)
+  (use-package go-add-tags     :ensure t)
   (use-package go-autocomplete :ensure t)
   (use-package go-eldoc        :ensure t)
   (use-package go-errcheck     :ensure t)
+  (use-package go-gopath       :ensure t)
+  (use-package go-projectile   :ensure t)
+  (use-package golint          :ensure t)
   (use-package gotest          :ensure t)
-  (setq gofmt-command "goimports")
 
   :config
+  (setq gofmt-command "goimports")
+  (add-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'go-mode-hook
             (lambda ()
-              (go-set-project)
-
-              (flycheck-mode)
+              (setq tab-width 4)
+              (flycheck-mode t)
               (auto-complete-mode)
-              (go-eldoc-setup)
-              (add-hook 'before-save-hook 'gofmt-before-save)
-              (setq tab-width 4))))
+              (go-set-project)
+              (go-eldoc-setup)))
+  :bind
+  (("M-." . godef-jump)))
 
 ;;
 ;; R
@@ -314,10 +329,18 @@
         js2-warn-about-unused-function-arguments t
         js2-basic-offset 2)
 
+  ;; (setq-default flycheck-temp-prefix ".")
+
+  ;; (setq flycheck-eslintrc "~/.eslintrc")
+
   (add-hook 'js2-mode-hook
             (lambda ()
               (subword-mode 1)
-              (diminish 'subword-mode)))
+              (flycheck-mode t)
+              (diminish 'subword-mode)
+              ;; (when (executable-find "eslint")
+              ;;   (flycheck-select-checker 'javascript-eslint))
+              ))
 
   :config
   (use-package tern
@@ -326,17 +349,40 @@
     :init
     (add-hook 'js2-mode-hook 'tern-mode)))
 
-(progn
-  (dolist (r '(;; init-aspell
-               ;; init-markdown
-               ;; init-ansi
-               ;; init-emacs-lisp
-               ;; init-tramp
-               ;; init-rust
-               init-web
-               ;;init-javascript
-               ))
-    (funcall 'require r)))
+;;
+;; coffee
+;;
+(use-package coffee-mode
+  :ensure t
+  :mode "\\.coffee\\'"
+  :init
+  (setq whitespace-action '(auto-cleanup))
+  (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab)))
+
+;;
+;; HTML
+;;
+(use-package web-mode
+  :ensure t
+  :mode "\\.html\\'"
+  :config
+  (progn
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (add-hook 'web-mode-hook
+              (lambda ()
+                (add-hook 'before-save-hook 'delete-trailing-whitespace)))))
+
+;; (progn
+;;   (dolist (r '(;; init-aspell
+;;                ;; init-markdown
+;;                ;; init-ansi
+;;                ;; init-emacs-lisp
+;;                ;; init-tramp
+;;                ;; init-rust
+;;                init-web))
+;;     (funcall 'require r)))
 
 ;; (when after-init-time
 ;;   (run-hooks 'after-init-hook))
