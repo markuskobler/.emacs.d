@@ -374,6 +374,8 @@
               (lambda ()
                 (add-hook 'before-save-hook 'delete-trailing-whitespace)))))
 
+(require 'init-aspell)
+
 ;; (progn
 ;;   (dolist (r '(;; init-aspell
 ;;                ;; init-markdown

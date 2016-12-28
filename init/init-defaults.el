@@ -34,4 +34,10 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
+
+;; fix the £/# on a GB keyboard
+;; (global-set-key (kbd "M-3")
+;;                 '(lambda()
+;;                    (interactive) (insert "#")))
+
 (provide 'init-defaults)
