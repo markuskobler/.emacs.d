@@ -99,15 +99,21 @@
 (use-package flycheck
   :ensure t
   :init
-  (add-hook 'after-init-hook 'global-flycheck-mode)
   (setq flycheck-display-errors-delay 0.3)
-  (setq-default flycheck-disabled-checkers
-                '(emacs-lisp-checkdoc
-                  html-tidy
-                  javascript-jshint))
 
   :config
   (set-face-foreground 'flycheck-error "red")
+  (global-flycheck-mode)
+  (setq-default flycheck-temp-prefix ".")
+  (setq flycheck-eslintrc "~/.eslintrc")
+  (flycheck-add-mode 'javascript-eslint 'js-mode)
+  (flycheck-add-mode 'javascript-eslint 'js2-mode)
+  (flycheck-add-mode 'javascript-eslint 'js2-jsx-mode)
+  (setq-default flycheck-disabled-checkers
+                '(emacs-lisp-checkdoc
+                  html-tidy
+                  javascript-jscs
+                  javascript-jshint))
 
   :bind
   ("C-c C-l" . flycheck-list-errors))
@@ -166,7 +172,7 @@
 
 (use-package json-mode
   :ensure t
-  :mode ("\\.json\\'" "\\.jshintrc\\'" "\\.eslintrc\\'" "\\.jscsrc\\'")
+  :mode ("\\.json\\'" "\\.jshintrc\\'")
 
   :init
   (setq show-trailing-whitespace t
@@ -320,14 +326,18 @@
   :mode (("\\.js\\'" . js2-mode)
          ("\\.jsx\\'" . js2-jsx-mode))
   :init
-  (setq js2-highlight-level 3
-        js2-strict-trailing-comma-warning nil
-        js2-strict-missing-semi-warning nil
-        js2-missing-semi-one-line-override t
-        js2-allow-rhino-new-expr-initializer nil
-        js2-include-node-externs t
-        js2-warn-about-unused-function-arguments t
-        js2-basic-offset 2)
+  (setq js2-highlight-level 3)
+  (setq js2-strict-trailing-comma-warning nil)
+  (setq js2-strict-missing-semi-warning nil)
+  (setq js2-missing-semi-one-line-override nil)
+  (setq js2-allow-rhino-new-expr-initializer nil)
+  (setq js2-include-node-externs t)
+  (setq js2-warn-about-unused-function-arguments t)
+
+  (setq js2-basic-offset 2)
+
+  (setq js2-mode-show-parse-errors nil)
+  (setq js2-mode-show-strict-warnings nil)
 
   ;; (setq-default flycheck-temp-prefix ".")
 
@@ -336,11 +346,13 @@
   (add-hook 'js2-mode-hook
             (lambda ()
               (subword-mode 1)
+              (flycheck-select-checker 'javascript-eslint)
               (flycheck-mode t)
-              (diminish 'subword-mode)
-              ;; (when (executable-find "eslint")
-              ;;   (flycheck-select-checker 'javascript-eslint))
-              ))
+              (diminish 'subword-mode)))
+
+  (add-hook 'js2-jsx-mode
+            (lambda ()
+              (setq js2-node-has-side-effects nil)))
 
   :config
   (use-package tern
