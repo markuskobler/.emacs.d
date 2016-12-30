@@ -268,6 +268,30 @@
   (("M-." . godef-jump)))
 
 ;;
+;; rust
+;;
+(use-package rust-mode
+  :ensure t
+  :mode "\\.rs\\'"
+  :init
+  (use-package racer
+    :ensure t
+    :config
+    (eldoc-mode t)
+    (company-mode t))
+
+  :config
+  (setq racer-rust-src-path "~/code/vendor/rust/src/")
+  (setq company-tooltip-align-annotations t)
+  (setq company-minimum-prefix-length 1)
+  (setq company-idle-delay 0.2)
+  (setq rust-ident-offset 4)
+  (setq tab-width 4)
+
+  (racer-mode t))
+
+
+;;
 ;; R
 ;;
 (use-package ess-site
