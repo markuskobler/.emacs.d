@@ -48,6 +48,7 @@
 (require 'init-keybindings)
 (require 'init-appearance)
 
+;; TODO: Tidy this block up
 (let ((p (concat (getenv "HOME") "/bin")))
   (setenv "PATH" (concat (getenv "PATH") ":" p))
   (add-to-list 'exec-path p))
@@ -77,15 +78,13 @@
 ;;
 (use-package dired-details
   :ensure t
-  :init
-  (setq-default dired-details-hidden-string "-- ")
-
   :config
+  (require 'dired-details :ensure t)
+  (setq-default dired-details-hidden-string "-- ")
   (let ((gls "/usr/local/bin/gls"))
     (when (file-exists-p gls)
             (setq insert-directory-program gls)))
 
-  (require 'dired-details)
   (dired-details-install))
 
 ;;
@@ -95,13 +94,12 @@
   :ensure t
   :commands
   (helm-get-sources helm-marked-candidates)
-  :init
-  (setq helm-autoresize-max-height 40
-        helm-autoresize-min-height 20
-        projectile-completion-system 'helm)
-
   :config
-  (use-package helm-config)
+  (require 'helm-config)
+  (setq helm-autoresize-min-height 20)
+  (setq helm-autoresize-max-height 40)
+  (setq projectile-completion-system 'helm)
+
   (helm-projectile-on)
   (helm-autoresize-mode 1)
   (helm-mode 1)
@@ -125,29 +123,22 @@
 ;;
 (use-package flycheck
   :ensure t
-  :init
-  (setq flycheck-display-errors-delay 0.3)
-
+  :defer t
   :config
-  (set-face-foreground 'flycheck-error "red")
-  (global-flycheck-mode)
-  (setq-default flycheck-temp-prefix ".")
-  ;; (setq flycheck-eslintrc "~/.eslintrc")
-  ;; (flycheck-add-mode 'javascript-eslint 'js-mode)
-  ;; (flycheck-add-mode 'javascript-eslint 'js2-mode)
-  ;; (flycheck-add-mode 'javascript-eslint 'js2-jsx-mode)
   (setq-default flycheck-disabled-checkers
                 '(emacs-lisp-checkdoc
                   html-tidy
                   javascript-jscs
                   javascript-jshint))
-  (setq flycheck-eslintrc "~/.eslintrc")
-  (flycheck-add-mode 'javascript-eslint 'js-mode)
-  (flycheck-add-mode 'javascript-eslint 'js2-mode)
-  (flycheck-add-mode 'javascript-eslint 'js2-jsx-mode)
+  (setq flycheck-display-errors-delay 0.3)
+  (set-face-foreground 'flycheck-error "red")
+  ;; (global-flycheck-mode)
+  ;; (setq flycheck-eslintrc "~/.eslintrc")
+  ;; (flycheck-add-mode 'javascript-eslint 'js-mode)
+  ;; (flycheck-add-mode 'javascript-eslint 'js2-mode)
+  ;; (flycheck-add-mode 'javascript-eslint 'js2-jsx-mode)
 
-  :bind
-  ("C-c C-l" . flycheck-list-errors))
+  :bind ("C-c C-l" . flycheck-list-errors))
 
 ;; (with-eval-after-load 'flycheck
 ;;   (flycheck-pos-tip-mode))
@@ -157,23 +148,11 @@
 ;;
 (use-package paredit
   :ensure t
-  :diminish paredit-mode
+  :defer t
   :init
   (add-hook 'lisp-mode-hook 'paredit-mode)
-  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook 'paredit-mode))
-
-;;
-;; paredit
-;;
-(use-package paredit
-  :ensure t
-  :diminish paredit-mode
-  :init
-  (add-hook 'lisp-mode-hook 'paredit-mode)
-  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
   (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
-  (add-hook 'json-mode-hook 'paredit-mode))
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
 
 ;;
 ;; git
@@ -182,6 +161,16 @@
   :ensure t
   :bind
   ("C-x m" . magit-status))
+
+
+(use-package git-gutter-fringe
+  :defer t
+  :ensure t
+  :config
+  (set-face-foreground 'git-gutter-fr:modified "yellow")
+  (set-face-foreground 'git-gutter-fr:added    "blue")
+  (set-face-foreground 'git-gutter-fr:deleted  "white"))
+
 
 ;;
 ;; toml
@@ -205,13 +194,10 @@
 (use-package json-mode
   :ensure t
   :mode ("\\.json\\'" "\\.jshintrc\\'")
-
-  :init
-  (setq show-trailing-whitespace t
-        js-indent-level 2)
-
   :config
-  (add-hook 'json-mode-hook 'flycheck-mode)
+  (setq show-trailing-whitespace t)
+  (setq js-indent-level 2)
+  (flycheck-mode t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
@@ -224,12 +210,10 @@
 ;;
 ;; eldoc
 ;;
-(use-package eldoc
-  :ensure t
-  :diminish eldoc-mode
-  :config
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode))
-
+;; (use-package eldoc
+;;   :ensure t
+;;   :config
+;;   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode))
 
 ;;
 ;; ruby
@@ -245,6 +229,7 @@
 ;;
 (use-package ensime
   :ensure t
+  :mode ("\\.scala\\'" "\\.sc\\'")
   :config
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
@@ -252,6 +237,7 @@
 ;; nix
 ;;
 (use-package nix-mode
+  :ensure t
   :mode "\\.nix\\'"
   :config
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
@@ -392,42 +378,34 @@
   :ensure t
   :mode (("\\.js\\'" . js2-mode)
          ("\\.jsx\\'" . js2-jsx-mode))
-  :init
-  (use-package tern
-    :ensure t
-    :diminish tern-mode)
-
   :config
-  (setq js2-highlight-level 3)
-  (setq js2-strict-trailing-comma-warning nil)
-  (setq js2-strict-missing-semi-warning nil)
-  (setq js2-missing-semi-one-line-override nil)
+  (use-package tern :ensure t)
+  
   (setq js2-allow-rhino-new-expr-initializer nil)
-  (setq js2-include-node-externs t)
-  (setq js2-warn-about-unused-function-arguments t)
-
   (setq js2-basic-offset 2)
-
+  (setq js2-highlight-level 3)
+  (setq js2-include-node-externs t)
+  (setq js2-missing-semi-one-line-override nil)
   (setq js2-mode-show-parse-errors nil)
   (setq js2-mode-show-strict-warnings nil)
+  (setq js2-strict-missing-semi-warning nil)
+  (setq js2-strict-trailing-comma-warning nil)
+  (setq js2-warn-about-unused-function-arguments t)
 
-  ;; (setq-default flycheck-temp-prefix ".")
-
-  ;; (setq flycheck-eslintrc "~/.eslintrc")
+  (setq-default flycheck-temp-prefix ".")
+  (setq flycheck-eslintrc "~/.eslintrc")
 
   (add-hook 'js2-mode-hook
             (lambda ()
-              (subword-mode 1)
-              ;; (flycheck-select-checker 'javascript-eslint)
-              (flycheck-mode t)
-              (diminish 'subword-mode)))
+              (flycheck-select-checker 'javascript-eslint)))
 
   (add-hook 'js2-jsx-mode
             (lambda ()
               ;; incremental dom does not need
               (setq js2-node-has-side-effects nil)))
 
-  (tern-mode t))
+  (tern-mode t)
+  (flycheck-mode t))
 
 ;;
 ;; coffee

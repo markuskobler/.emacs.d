@@ -35,10 +35,4 @@
   (progn
     (load-theme 'darkokai t)))
 
-(use-package git-gutter-fringe+
-  :ensure t
-  :config
-  (progn
-    (global-git-gutter+-mode)))
-
 (provide 'init-appearance)
