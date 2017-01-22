@@ -164,7 +164,6 @@
 
 
 (use-package git-gutter-fringe
-  :defer t
   :ensure t
   :config
   (set-face-foreground 'git-gutter-fr:modified "yellow")
@@ -221,6 +220,7 @@
 (use-package ruby-mode
   :ensure t
   :mode "\\.rb\\'"
+  :interpreter "ruby"
   :config
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 

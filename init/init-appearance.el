@@ -29,10 +29,20 @@
   (when (file-directory-p path)
     (add-to-list 'custom-theme-load-path path)))
 
-(use-package darkokai-theme
+;; (use-package darkokai-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'darkokai t))
+
+;; (use-package zenburn-theme
+;;   :ensure t
+;;   :config
+;;   (load-theme 'zenburn t))
+
+(use-package dracula-theme
   :ensure t
   :config
-  (progn
-    (load-theme 'darkokai t)))
+  (load-theme 'dracula t))
+
 
 (provide 'init-appearance)
