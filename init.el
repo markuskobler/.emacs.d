@@ -61,6 +61,33 @@
   (setenv "PATH" (concat (getenv "PATH") ":" p))
   (add-to-list 'exec-path p))
 
+
+;;
+;; multiple-cursors
+;;
+(use-package multiple-cursors
+  :ensure t
+  :bind
+  (("C->"     . mc/mark-next-like-this)
+   ("C-<"     . mc/mark-previous-like-this)
+   ("C-c C-l" . mc/mark-all-like-this)))
+
+;;
+;; dired
+;;
+(use-package dired-details
+  :ensure t
+  :init
+  (setq-default dired-details-hidden-string "-- ")
+
+  :config
+  (let ((gls "/usr/local/bin/gls"))
+    (when (file-exists-p gls)
+            (setq insert-directory-program gls)))
+
+  (require 'dired-details)
+  (dired-details-install))
+
 ;;
 ;; helm
 ;;
@@ -105,15 +132,15 @@
   (set-face-foreground 'flycheck-error "red")
   (global-flycheck-mode)
   (setq-default flycheck-temp-prefix ".")
-  (setq flycheck-eslintrc "~/.eslintrc")
-  (flycheck-add-mode 'javascript-eslint 'js-mode)
-  (flycheck-add-mode 'javascript-eslint 'js2-mode)
-  (flycheck-add-mode 'javascript-eslint 'js2-jsx-mode)
   (setq-default flycheck-disabled-checkers
                 '(emacs-lisp-checkdoc
                   html-tidy
                   javascript-jscs
                   javascript-jshint))
+  (setq flycheck-eslintrc "~/.eslintrc")
+  (flycheck-add-mode 'javascript-eslint 'js-mode)
+  (flycheck-add-mode 'javascript-eslint 'js2-mode)
+  (flycheck-add-mode 'javascript-eslint 'js2-jsx-mode)
 
   :bind
   ("C-c C-l" . flycheck-list-errors))
@@ -122,29 +149,15 @@
 ;;   (flycheck-pos-tip-mode))
 
 ;;
-;; dired
+;; paredit
 ;;
-(use-package dired-details
+(use-package paredit
   :ensure t
+  :diminish paredit-mode
   :init
-  (setq-default dired-details-hidden-string "-- ")
-  (let ((gls "/usr/local/bin/gls"))
-    (when (file-exists-p gls)
-            (setq insert-directory-program gls)))
-
-  :config
-  (require 'dired-details)
-  (dired-details-install))
-
-;;
-;; multiple-cursors
-;;
-(use-package multiple-cursors
-  :ensure t
-  :bind
-  (("C->"     . mc/mark-next-like-this)
-   ("C-<"     . mc/mark-previous-like-this)
-   ("C-c C-l" . mc/mark-all-like-this)))
+  (add-hook 'lisp-mode-hook 'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook 'paredit-mode))
 
 ;;
 ;; git
@@ -168,20 +181,7 @@
   :ensure t
   :mode "\\.yml\\'"
   :config
-  (use-package yaml-tomato))
-
-(use-package json-mode
-  :ensure t
-  :mode ("\\.json\\'" "\\.jshintrc\\'")
-
-  :init
-  (setq show-trailing-whitespace t
-        js-indent-level 2)
-
-  :config
-  (add-hook 'json-mode-hook 'flycheck-mode)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace))
-
+  (use-package yaml-tomato :ensure t))
 
 ;;
 ;; Dockerfile
@@ -196,8 +196,22 @@
 (use-package eldoc
   :ensure t
   :diminish eldoc-mode
-  :init
+  :config
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode))
+
+;;
+;; json
+;;
+(use-package json-mode
+  :ensure t
+  :mode ("\\.json\\'" "\\.jshintrc\\'")
+  :init
+  (setq show-trailing-whitespace t
+        js-indent-level 2)
+  :config
+  (flycheck-mode t)
+  (paredit-mode t)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
 ;; ruby
@@ -205,7 +219,7 @@
 (use-package ruby-mode
   :ensure t
   :mode "\\.rb\\'"
-  :init
+  :config
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
@@ -213,7 +227,7 @@
 ;;
 (use-package ensime
   :ensure t
-  :init
+  :config
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
@@ -221,7 +235,7 @@
 ;;
 (use-package nix-mode
   :mode "\\.nix\\'"
-  :init
+  :config
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
@@ -230,7 +244,7 @@
 (use-package web-mode
   :ensure t
   :mode "\\.html\\'"
-  :init
+  :config
   (setq web-mode-markup-indent-offset 2
         web-mode-css-indent-offset 2
         web-mode-code-indent-offset 2)
@@ -242,9 +256,8 @@
 (use-package go-mode
   :ensure t
   :mode "\\.go\\'"
-  :init
+  :config
   (use-package auto-complete   :ensure t)
-  (use-package flycheck        :ensure t)
   (use-package go-add-tags     :ensure t)
   (use-package go-autocomplete :ensure t)
   (use-package go-eldoc        :ensure t)
@@ -254,7 +267,6 @@
   (use-package golint          :ensure t)
   (use-package gotest          :ensure t)
 
-  :config
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'go-mode-hook
@@ -273,13 +285,6 @@
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'"
-  :init
-  (use-package racer
-    :ensure t
-    :config
-    (eldoc-mode t)
-    (company-mode t))
-
   :config
   (setq racer-rust-src-path "~/code/vendor/rust/src/")
   (setq company-tooltip-align-annotations t)
@@ -288,8 +293,13 @@
   (setq rust-ident-offset 4)
   (setq tab-width 4)
 
-  (racer-mode t))
+  (use-package racer
+    :ensure t
+    :config
+    (eldoc-mode t)
+    (company-mode t))
 
+  (racer-mode t))
 
 ;;
 ;; R
@@ -303,16 +313,31 @@
   (add-hook 'R-mode-hook #'subword-mode))
 
 ;;
-;; paredit
+;; OCaml
 ;;
-(use-package paredit
+(use-package merlin
   :ensure t
-  :diminish paredit-mode
+  :mode (("\\.ml\\'" . merlin-mode)
+         ("\\.mli\\'" . merlin-mode))
   :init
-  (add-hook 'lisp-mode-hook 'paredit-mode)
-  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
-  (add-hook 'json-mode-hook 'paredit-mode))
+  (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+    (when (and opam-share (file-directory-p opam-share))
+      (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))))
+
+  :config
+  ;; (use-package ocp-indent :ensure t)
+  (use-package tuareg :ensure t)
+  (use-package flycheck-ocaml :ensure t)
+
+  (tuareg-mode)
+  (flycheck-mode t)
+  (company-mode t)
+
+  ;; (use-package utop
+  ;;   :ensure t
+  ;;   :config
+  ;;   (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t))
+  )
 
 ;;
 ;; css/sass
