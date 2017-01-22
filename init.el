@@ -132,6 +132,10 @@
   (set-face-foreground 'flycheck-error "red")
   (global-flycheck-mode)
   (setq-default flycheck-temp-prefix ".")
+  ;; (setq flycheck-eslintrc "~/.eslintrc")
+  ;; (flycheck-add-mode 'javascript-eslint 'js-mode)
+  ;; (flycheck-add-mode 'javascript-eslint 'js2-mode)
+  ;; (flycheck-add-mode 'javascript-eslint 'js2-jsx-mode)
   (setq-default flycheck-disabled-checkers
                 '(emacs-lisp-checkdoc
                   html-tidy
@@ -160,6 +164,18 @@
   (add-hook 'lisp-interaction-mode-hook 'paredit-mode))
 
 ;;
+;; paredit
+;;
+(use-package paredit
+  :ensure t
+  :diminish paredit-mode
+  :init
+  (add-hook 'lisp-mode-hook 'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
+  (add-hook 'json-mode-hook 'paredit-mode))
+
+;;
 ;; git
 ;;
 (use-package magit
@@ -184,6 +200,21 @@
   (use-package yaml-tomato :ensure t))
 
 ;;
+;; json
+;;
+(use-package json-mode
+  :ensure t
+  :mode ("\\.json\\'" "\\.jshintrc\\'")
+
+  :init
+  (setq show-trailing-whitespace t
+        js-indent-level 2)
+
+  :config
+  (add-hook 'json-mode-hook 'flycheck-mode)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
+;;
 ;; Dockerfile
 ;;
 (use-package dockerfile-mode
@@ -199,19 +230,6 @@
   :config
   (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode))
 
-;;
-;; json
-;;
-(use-package json-mode
-  :ensure t
-  :mode ("\\.json\\'" "\\.jshintrc\\'")
-  :init
-  (setq show-trailing-whitespace t
-        js-indent-level 2)
-  :config
-  (flycheck-mode t)
-  (paredit-mode t)
-  (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
 ;; ruby
@@ -375,6 +393,11 @@
   :mode (("\\.js\\'" . js2-mode)
          ("\\.jsx\\'" . js2-jsx-mode))
   :init
+  (use-package tern
+    :ensure t
+    :diminish tern-mode)
+
+  :config
   (setq js2-highlight-level 3)
   (setq js2-strict-trailing-comma-warning nil)
   (setq js2-strict-missing-semi-warning nil)
@@ -395,20 +418,16 @@
   (add-hook 'js2-mode-hook
             (lambda ()
               (subword-mode 1)
-              (flycheck-select-checker 'javascript-eslint)
+              ;; (flycheck-select-checker 'javascript-eslint)
               (flycheck-mode t)
               (diminish 'subword-mode)))
 
   (add-hook 'js2-jsx-mode
             (lambda ()
+              ;; incremental dom does not need
               (setq js2-node-has-side-effects nil)))
 
-  :config
-  (use-package tern
-    :ensure t
-    :diminish tern-mode
-    :init
-    (add-hook 'js2-mode-hook 'tern-mode)))
+  (tern-mode t))
 
 ;;
 ;; coffee
@@ -435,28 +454,7 @@
               (lambda ()
                 (add-hook 'before-save-hook 'delete-trailing-whitespace)))))
 
-(require 'init-aspell)
+;; (require 'init-aspell)
 
-;; (progn
-;;   (dolist (r '(;; init-aspell
-;;                ;; init-markdown
-;;                ;; init-ansi
-;;                ;; init-emacs-lisp
-;;                ;; init-tramp
-;;                ;; init-rust
-;;                init-web))
-;;     (funcall 'require r)))
-
-;; (when after-init-time
-;;   (run-hooks 'after-init-hook))
-
-;; (put 'erase-buffer 'disabled nil)
-;; (put 'downcase-region 'disabled nil)
-
-;; (make-directory
-;;  (setq tmp-local-dir
-;;        (expand-file-name "tmp" user-emacs-directory)) t)
-
-;; (dolist (project (directory-files base-path t "\\w+"))
-;;   (when (file-directory-p project)
-;;     (add-to-list 'load-path project)))
+(when after-init-time
+  (run-hooks 'after-init-hook))
