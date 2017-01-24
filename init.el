@@ -180,25 +180,26 @@
 (use-package whitespace
   :ensure t
   :init
-  (custom-set-faces
-   '(my-carriage-return-face ((((class color)) (:background "blue"))) t)
-   '(my-tab-face ((((class color)) (:background "green"))) t))
+  ;; (custom-set-faces
+  ;;  '(my-carriage-return-face ((((class color)) (:background "blue"))) t)
+  ;;  '(my-tab-face ((((class color)) (:background "green"))) t))
 
-  (add-hook
-   'font-lock-mode-hook
-   (function
-    (lambda ()
-      (setq
-       font-lock-keywords
-       (append
-        font-lock-keywords
-        '(
-          ("\r" (0 'my-carriage-return-face t))
-          ("\t" (0 'my-tab-face t))
-          ))))))
+  ;; (add-hook
+  ;;  'font-lock-mode-hook
+  ;;  (function
+  ;;   (lambda ()
+  ;;     (setq
+  ;;      font-lock-keywords
+  ;;      (append
+  ;;       font-lock-keywords
+  ;;       '(
+  ;;         ("\r" (0 'my-carriage-return-face t))
+  ;;         ("\t" (0 'my-tab-face t))
+  ;;         ))))))
 
   (setq whitespace-style
-        (quote (face trailing tab-mark lines-tail)))
+        (quote (face trailing lines-tail)))
+
   (add-hook 'find-file-hook 'whitespace-mode)
 
   (setq whitespace-display-mappings '((tab-mark 9 [9654 9] [92 9]))))
@@ -323,11 +324,15 @@
   (setq gofmt-command "goimports")
   (add-hook 'before-save-hook 'gofmt-before-save)
 
-  (setq tab-width 4)
   (flycheck-mode t)
   (auto-complete-mode)
   (go-set-project)
   (go-eldoc-setup)
+
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (setq tab-width 4)
+              (setq indent-tabs-mode 1)))
 
   :bind
   ("M-." . godef-jump))
@@ -401,7 +406,7 @@
   :config
   (setq-default css-basic-offset 2)
   (setq-default css-indent-offset 2)
-  
+
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 (use-package scss-mode
@@ -411,7 +416,7 @@
   (setq-default css-basic-offset 2)
   (setq-default css-indent-offset 2)
   (setq-default scss-compile-at-save nil)
-  
+
   (rainbow-mode t)
   (flycheck-mode t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
