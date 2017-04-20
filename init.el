@@ -119,11 +119,13 @@
   :ensure t
   :config
   (projectile-global-mode)
+  (setq helm-projectile-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
+  (setq helm-projectile-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))
 
   :bind (("C-c p h" . helm-projectile)
          ("C-c p p" . helm-projectile-switch-project)
          ("C-c p f" . helm-projectile-find-file)
-         ("C-c p g" . helm-projectile-grep)))
+         ("C-c p g" . helm-projectile-ag)))
 
 ;;
 ;; flycheck
@@ -197,10 +199,12 @@
   ;;         ("\t" (0 'my-tab-face t))
   ;;         ))))))
 
+  (setq whitespace-line-column 120)
+
   (setq whitespace-style
         (quote (face trailing lines-tail)))
 
-  (add-hook 'find-file-hook 'whitespace-mode)
+  ;; (add-hook 'find-file-hook 'whitespace-mode)
 
   (setq whitespace-display-mappings '((tab-mark 9 [9654 9] [92 9]))))
 
@@ -216,7 +220,7 @@
   :ensure t
   :diminish git-gutter-mode
   :config
-  (setq git-gutter-fr:side 'right-fringe)
+  (setq git-gutter-fr:side 'left-fringe)
   (set-face-foreground 'git-gutter-fr:modified "blue")
   (set-face-foreground 'git-gutter-fr:added    "green")
   (set-face-foreground 'git-gutter-fr:deleted  "red")
@@ -337,6 +341,14 @@
   :bind
   ("M-." . godef-jump))
 
+
+(use-package lsp-mode
+  :ensure t
+  :config
+  (global-lsp-mode t)
+  (with-eval-after-load 'lsp-mode
+    (require 'lsp-flycheck)))  
+
 ;;
 ;; rust
 ;;
@@ -344,21 +356,27 @@
   :ensure t
   :mode "\\.rs\\'"
   :config
-  (setq racer-rust-src-path "~/code/vendor/rust/src/")
-  (setq company-tooltip-align-annotations t)
-  (setq company-minimum-prefix-length 1)
-  (setq company-idle-delay 0.2)
+
   (setq rust-ident-offset 4)
   (setq tab-width 4)
+  
+  (use-package lsp-rust
+    :ensure t)
+  
+;;   (setq racer-rust-src-path "~/code/vendor/rust/src/")
+;;   (setq company-tooltip-align-annotations t)
+;;   (setq company-minimum-prefix-length 1)
+;;   (setq company-idle-delay 0.2)
 
-  (use-package racer
-    :ensure t
-    :config
-    (eldoc-mode t)
-    (company-mode t))
+;;   (use-package racer
+;;     :ensure t
+;;     :config
+;;     (eldoc-mode t)
+;;     (company-mode t))
 
-  (racer-mode t))
-
+;;   (racer-mode t)
+;;   (add-hook 'before-save-hook 'delete-trailing-whitespace))
+    )
 ;;
 ;; R
 ;;
@@ -412,6 +430,9 @@
 (use-package scss-mode
   :ensure t
   :mode "\\.scss\\'"
+  :init
+  (use-package rainbow-mode :ensure t)
+
   :config
   (setq-default css-basic-offset 2)
   (setq-default css-indent-offset 2)
@@ -487,3 +508,6 @@
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;; (require 'init-aspell)
+;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
+(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+;; ## end of OPAM user-setup addition for emacs / base ## keep this line
