@@ -35,7 +35,7 @@
   (run-hooks 'after-init-hook))
 
 (progn
-  (dolist (p '("init"))
+  (dolist (p '("init" "vendor/lsp-rust"))
     (add-to-list 'load-path
                  (expand-file-name p user-emacs-directory))))
 
@@ -342,12 +342,12 @@
   ("M-." . godef-jump))
 
 
-(use-package lsp-mode
-  :ensure t
-  :config
-  (global-lsp-mode t)
-  (with-eval-after-load 'lsp-mode
-    (require 'lsp-flycheck)))  
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :config
+;;   (global-lsp-mode t)
+;;   (with-eval-after-load 'lsp-mode
+;;     (require 'lsp-flycheck)))  
 
 ;;
 ;; rust
@@ -360,23 +360,22 @@
   (setq rust-ident-offset 4)
   (setq tab-width 4)
   
-  (use-package lsp-rust
-    :ensure t)
+  ;; (use-package lsp-rust
+  ;;   :ensure t)
   
-;;   (setq racer-rust-src-path "~/code/vendor/rust/src/")
-;;   (setq company-tooltip-align-annotations t)
-;;   (setq company-minimum-prefix-length 1)
-;;   (setq company-idle-delay 0.2)
+  (setq company-tooltip-align-annotations t)
+  (setq company-minimum-prefix-length 1)
+  (setq company-idle-delay 0.2)
 
-;;   (use-package racer
-;;     :ensure t
-;;     :config
-;;     (eldoc-mode t)
-;;     (company-mode t))
+  (use-package racer
+    :ensure t
+    :config
+    (eldoc-mode t)
+    (company-mode t))
+  
+  (racer-mode t)
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
-;;   (racer-mode t)
-;;   (add-hook 'before-save-hook 'delete-trailing-whitespace))
-    )
 ;;
 ;; R
 ;;
