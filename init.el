@@ -35,7 +35,7 @@
   (run-hooks 'after-init-hook))
 
 (progn
-  (dolist (p '("init" "vendor/lsp-rust"))
+  (dolist (p '("init" "vendor/lsp-rust" "/Users/markus/code/vendor/reason-mode"))
     (add-to-list 'load-path
                  (expand-file-name p user-emacs-directory))))
 
@@ -132,8 +132,8 @@
 ;;
 (use-package flycheck
   :ensure t
-  :init
-  (add-hook 'after-init-hook #'global-flycheck-mode)
+  ;; :init
+  ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
   :config
   (use-package flycheck-pos-tip :ensure t)
@@ -347,7 +347,7 @@
 ;;   :config
 ;;   (global-lsp-mode t)
 ;;   (with-eval-after-load 'lsp-mode
-;;     (require 'lsp-flycheck)))  
+;;     (require 'lsp-flycheck)))
 
 ;;
 ;; rust
@@ -355,25 +355,25 @@
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'"
-  :config
+  :init
+  (add-hook 'rust-mode-hook #'racer-mode)
 
+  (use-package racer
+    :ensure t
+    :init
+    (add-hook 'racer-mode-hook #'eldoc-mode)
+    (add-hook 'racer-mode-hook #'company-mode))
+
+  :config
   (setq rust-ident-offset 4)
   (setq tab-width 4)
-  
-  ;; (use-package lsp-rust
-  ;;   :ensure t)
-  
+
+  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+
   (setq company-tooltip-align-annotations t)
   (setq company-minimum-prefix-length 1)
   (setq company-idle-delay 0.2)
 
-  (use-package racer
-    :ensure t
-    :config
-    (eldoc-mode t)
-    (company-mode t))
-  
-  (racer-mode t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
@@ -413,6 +413,49 @@
   ;;   :config
   ;;   (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t))
   )
+
+(use-package merlin
+  :ensure t
+  :mode (("\\.ml\\'" . merlin-mode)
+         ("\\.mli\\'" . merlin-mode))
+  :config
+  (defun chomp-end (str)
+    "Chomp tailing whitespace from STR."
+    (replace-regexp-in-string (rx (* (any " \t\n")) eos)
+                              ""
+                              str))
+
+  (defun shell-cmd (cmd)
+    "Returns the stdout output of a shell command or nil if the command returned
+   an error"
+    (let ((stdoutput (chomp-end
+                      (with-output-to-string
+                        (with-current-buffer
+                            standard-output
+                          (process-file shell-file-name nil
+                                        '(t nil)  nil
+                                        shell-command-switch cmd))))))
+      (when (not (= (length stdoutput) 0))
+        stdoutput)))
+
+  (let* ((refmt-bin (shell-cmd "refmt ----where"))
+         (merlin-bin (shell-cmd "ocamlmerlin ----where"))
+         (merlin-base-dir (when merlin-bin (replace-regexp-in-string "bin/ocamlmerlin$" "" merlin-bin))))
+    ;; Add npm merlin.el to the emacs load path and tell emacs where to find ocamlmerlin
+    (when merlin-bin
+      (add-to-list 'load-path (concat merlin-base-dir "share/emacs/site-lisp/"))
+      (setq merlin-command merlin-bin))
+
+    (when refmt-bin
+      (setq refmt-command refmt-bin)))
+
+  (require 'reason-mode)
+  (require 'merlin)
+  (add-hook 'reason-mode-hook (lambda ()
+                                (add-hook 'before-save-hook 'refmt-before-save)
+                                (merlin-mode)))
+
+  (setq merlin-ac-setup t))
 
 ;;
 ;; css/sass
