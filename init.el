@@ -35,13 +35,13 @@
   (run-hooks 'after-init-hook))
 
 (progn
-  (dolist (p '("init"))
+  (dolist (p '("init" "reason-mode"))
     (add-to-list 'load-path
                  (expand-file-name p user-emacs-directory))))
 
-(setq custom-file
-      (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+;; (setq custom-file
+;;       (expand-file-name "custom.el" user-emacs-directory))
+;; (load custom-file)
 
 (require 'init-defaults)
 (require 'init-appearance)
@@ -197,10 +197,10 @@
   ;;         ("\t" (0 'my-tab-face t))
   ;;         ))))))
 
-  (setq whitespace-style
-        (quote (face trailing lines-tail)))
+  ;; (setq whitespace-style
+  ;;       (quote (face trailing lines-tail)))
 
-  (add-hook 'find-file-hook 'whitespace-mode)
+  ;; (add-hook 'find-file-hook 'whitespace-mode)
 
   (setq whitespace-display-mappings '((tab-mark 9 [9654 9] [92 9]))))
 
@@ -486,4 +486,63 @@
   (setq web-mode-code-indent-offset 2)
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
+;;
+;; reason
+;;
+(defun chomp-end (str)
+    "Chomp tailing whitespace from STR."
+    (replace-regexp-in-string (rx (* (any " \t\n")) eos)
+                              ""
+                              str))
+
+(defun shell-cmd (cmd)
+  "Returns the stdout output of a shell command or nil if the command returned
+   an error"
+  (let ((stdoutput (chomp-end
+                    (with-output-to-string
+                      (with-current-buffer
+                          standard-output
+                        (process-file shell-file-name nil
+                                      '(t nil)  nil
+                                      shell-command-switch cmd))))))
+    (when (not (= (length stdoutput) 0))
+      stdoutput)))
+
+(let* ((refmt-bin (shell-cmd "refmt ----where"))
+       (merlin-bin (shell-cmd "ocamlmerlin ----where"))
+       (merlin-base-dir (when merlin-bin (replace-regexp-in-string "bin/ocamlmerlin$" "" merlin-bin))))
+  ;; Add npm merlin.el to the emacs load path and tell emacs where to find ocamlmerlin
+  (when merlin-bin
+    (add-to-list 'load-path (concat merlin-base-dir "share/emacs/site-lisp/"))
+    (setq merlin-command merlin-bin))
+
+  (when refmt-bin
+    (setq refmt-command refmt-bin)))
+
+(use-package reason-mode
+  :ensure f
+  :mode (("\\.re\\'" . reason-mode)
+         ("\\.rei\\'" . reason-mode))  
+  :config
+  (use-package merlin :ensure t)
+  ;; (add-hook 'reason-mode-hook
+  ;;           (lambda ()
+  ;;             (add-hook 'before-save-hook 'refmt-before-save)
+  ;;             (merlin-mode)))
+  (setq merlin-ac-setup t))
+
 ;; (require 'init-aspell)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (rainbow-mode helm-ag racer yaml-tomato coffee-mode js2-mode tern scss-mode flycheck-ocaml tuareg merlin ess rust-mode go-mode web-mode nix-mode ensime dockerfile-mode json-mode yaml-mode toml-mode git-gutter-fringe magit paredit flycheck-pos-tip flycheck use-package multiple-cursors helm-projectile exec-path-from-shell dracula-theme dired-details auto-complete))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
