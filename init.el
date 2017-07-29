@@ -18,9 +18,6 @@
   (defconst *is-mac*
     (eq system-type 'darwin) "is macos")
 
-  (defconst *is-cocoa*
-    (and *is-mac* (eq window-system 'ns)) "is cocoa")
-
   (defvar use-package-verbose t)
   (require 'use-package))
 
@@ -45,6 +42,11 @@
 
 (require 'init-defaults)
 (require 'init-appearance)
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
@@ -423,6 +425,7 @@
          ("\\.rei\\'" . reason-mode))
   :config
   (use-package merlin :ensure t)
+  (use-package ocp-indent :ensure t)
   ;; (add-hook 'reason-mode-hook
   ;;           (lambda ()
   ;;             ;; (add-hook 'before-save-hook 'refmt-before-save)
@@ -520,6 +523,15 @@
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
+;;
+;; Org
+;;
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook
+            (lambda () (org-bullets-mode 1))))
 
 ;; (require 'init-aspell)
 ;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
