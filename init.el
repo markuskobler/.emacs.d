@@ -6,6 +6,10 @@
         ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
 (eval-when-compile
   (setq inhibit-startup-message t)
 
@@ -23,10 +27,6 @@
 
 (require 'bind-key)
 (require 'diminish nil t)
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
 
 (when after-init-time
   (run-hooks 'after-init-hook))
@@ -283,11 +283,11 @@
 ;;
 ;; scala
 ;;
-(use-package ensime
-  :ensure t
-  :mode ("\\.scala\\'" "\\.sc\\'")
-  :config
-  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+;; (use-package ensime
+;;   :ensure t
+;;   :mode ("\\.scala\\'" "\\.sc\\'")
+;;   :config
+;;   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
 ;; nix
@@ -381,45 +381,45 @@
 ;;
 ;; OCaml
 ;;
-(use-package merlin
-  :ensure t
-  :mode (("\\.ml\\'" . merlin-mode)
-         ("\\.mli\\'" . merlin-mode))
-  :init
-  (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
-    (when (and opam-share (file-directory-p opam-share))
-      (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))))
+;; (use-package merlin
+;;   :ensure t
+;;   :mode (("\\.ml\\'" . merlin-mode)
+;;          ("\\.mli\\'" . merlin-mode))
+;;   :init
+;;   (let ((opam-share (ignore-errors (car (process-lines "opam" "config" "var" "share")))))
+;;     (when (and opam-share (file-directory-p opam-share))
+;;       (add-to-list 'load-path (expand-file-name "emacs/site-lisp" opam-share))))
 
-  :config
-  ;; (use-package ocp-indent :ensure t)
-  (use-package tuareg :ensure t)
-  (use-package flycheck-ocaml :ensure t)
+;;   :config
+;;   ;; (use-package ocp-indent :ensure t)
+;;   (use-package tuareg :ensure t)
+;;   (use-package flycheck-ocaml :ensure t)
 
-  (tuareg-mode)
-  (flycheck-mode t)
-  (company-mode t)
+;;   (tuareg-mode)
+;;   (flycheck-mode t)
+;;   (company-mode t)
 
-  ;; (use-package utop
-  ;;   :ensure t
-  ;;   :config
-  ;;   (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t))
-  )
+;;   ;; (use-package utop
+;;   ;;   :ensure t
+;;   ;;   :config
+;;   ;;   (autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t))
+;;   )
 
 ;;
 ;; reason
 ;;
-(use-package reason-mode
-  :ensure f
-  :mode (("\\.re\\'" . reason-mode)
-         ("\\.rei\\'" . reason-mode))
-  :config
-  (use-package merlin :ensure t)
-  (use-package ocp-indent :ensure t)
-  ;; (add-hook 'reason-mode-hook
-  ;;           (lambda ()
-  ;;             ;; (add-hook 'before-save-hook 'refmt-before-save)
-  ;;             (merlin-mode)))
-  (setq merlin-ac-setup t))
+;; (use-package reason-mode
+;;   :ensure f
+;;   :mode (("\\.re\\'" . reason-mode)
+;;          ("\\.rei\\'" . reason-mode))
+;;   :config
+;;   (use-package merlin :ensure t)
+;;   (use-package ocp-indent :ensure t)
+;;   ;; (add-hook 'reason-mode-hook
+;;   ;;           (lambda ()
+;;   ;;             ;; (add-hook 'before-save-hook 'refmt-before-save)
+;;   ;;             (merlin-mode)))
+;;   (setq merlin-ac-setup t))
 
 ;;
 ;; css/sass
