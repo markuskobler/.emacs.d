@@ -1,5 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
+(setq gc-cons-threshold 100000000)
+
 (require 'package)
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -100,11 +102,14 @@
 ;;
 (use-package helm
   :ensure t
+  :defer t
   :commands
   (helm-get-sources helm-marked-candidates)
 
-  :config
+  :init
   (require 'helm-config)
+
+  :config
   (setq helm-autoresize-min-height 20)
   (setq helm-autoresize-max-height 40)
   (setq projectile-completion-system 'helm)
@@ -119,10 +124,12 @@
 
 (use-package helm-projectile
   :ensure t
+  :defer t
   :config
   (projectile-global-mode)
   (setq helm-projectile-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
   (setq helm-projectile-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))
+  (setq projectile-enable-caching t)
 
   :bind (("C-c p h" . helm-projectile)
          ("C-c p p" . helm-projectile-switch-project)
@@ -134,6 +141,7 @@
 ;;
 (use-package flycheck
   :ensure t
+  :defer t
   ;; :init
   ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 
@@ -233,6 +241,7 @@
 ;;
 (use-package toml-mode
   :ensure t
+  :defer t
   :mode "\\.toml\\'")
 
 ;;
@@ -240,6 +249,7 @@
 ;;
 (use-package yaml-mode
   :ensure t
+  :defer t
   :mode "\\.yml\\'"
   :config
   (use-package yaml-tomato :ensure t))
@@ -249,6 +259,7 @@
 ;;
 (use-package json-mode
   :ensure t
+  :defer t
   :mode ("\\.json\\'" "\\.jshintrc\\'")
   :config
   (setq js-indent-level 2)
@@ -260,6 +271,7 @@
 ;;
 (use-package dockerfile-mode
   :ensure t
+  :defer t
   :mode "Dockerfile")
 
 ;;
@@ -275,6 +287,7 @@
 ;;
 (use-package ruby-mode
   :ensure t
+  :defer t
   :mode "\\.rb\\'"
   :interpreter "ruby"
   :config
@@ -294,6 +307,7 @@
 ;;
 (use-package nix-mode
   :ensure t
+  :defer t
   :mode "\\.nix\\'"
   :config
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
@@ -303,6 +317,7 @@
 ;;
 (use-package web-mode
   :ensure t
+  :defer t
   :mode "\\.html\\'"
   :config
   (setq web-mode-markup-indent-offset 2
@@ -315,6 +330,7 @@
 ;;
 (use-package go-mode
   :ensure t
+  :defer t
   :mode "\\.go\\'"
   :config
   (use-package auto-complete   :ensure t)
@@ -356,15 +372,10 @@
 ;;
 (use-package rust-mode
   :ensure t
+  :defer t
   :mode "\\.rs\\'"
   :init
   (add-hook 'rust-mode-hook #'racer-mode)
-
-  (use-package racer
-    :ensure t
-    :init
-    (add-hook 'racer-mode-hook #'eldoc-mode)
-    (add-hook 'racer-mode-hook #'company-mode))
 
   :config
   (setq rust-ident-offset 4)
@@ -377,6 +388,13 @@
   (setq company-idle-delay 0.2)
 
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
+
+(use-package racer
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode))
 
 ;;
 ;; OCaml
@@ -426,6 +444,7 @@
 ;;
 (use-package css-mode
   :ensure t
+  :defer t
   :mode "\\.css\\'"
   :config
   (setq-default css-basic-offset 2)
@@ -435,6 +454,7 @@
 
 (use-package scss-mode
   :ensure t
+  :defer t
   :mode "\\.scss\\'"
   :init
   (use-package rainbow-mode :ensure t)
@@ -453,10 +473,12 @@
 ;;
 (use-package tern
   :ensure t
+  :defer t
   :defer t)
 
 (use-package js2-mode
   :ensure t
+  :defer t
   :mode (("\\.js\\'" . js2-mode)
          ("\\.jsx\\'" . js2-jsx-mode))
   :config
@@ -495,6 +517,7 @@
 ;;
 (use-package coffee-mode
   :ensure t
+  :defer t
   :mode "\\.coffee\\'"
   :config
   (setq whitespace-action '(auto-cleanup))
@@ -506,6 +529,7 @@
 ;;
 (use-package web-mode
   :ensure t
+  :defer t
   :mode "\\.html\\'"
   :config
   (setq web-mode-markup-indent-offset 2)
@@ -518,11 +542,9 @@
 ;;
 (use-package org-bullets
   :ensure t
+  :defer t
   :config
   (add-hook 'org-mode-hook
             (lambda () (org-bullets-mode 1))))
 
 ;; (require 'init-aspell)
-;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
-(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
-;; ## end of OPAM user-setup addition for emacs / base ## keep this line
