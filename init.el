@@ -379,17 +379,6 @@
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
-;; R
-;;
-(use-package ess-site
-  :ensure ess
-  :functions poin-max
-  :mode ("\\.R\\'" . R-mode)
-  :commands R
-  :config
-  (add-hook 'R-mode-hook #'subword-mode))
-
-;;
 ;; OCaml
 ;;
 (use-package merlin
