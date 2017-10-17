@@ -2,6 +2,8 @@
     (add-to-list 'initial-frame-alist '(font . "Source Code Pro"))
     (add-to-list 'default-frame-alist '(font . "Source Code Pro")))
 
+(set-face-attribute 'default nil :height 120)
+
 (when *is-linux*
   (set-face-attribute 'default nil :height 95))
 

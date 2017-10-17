@@ -38,9 +38,8 @@
     (add-to-list 'load-path
                  (expand-file-name p user-emacs-directory))))
 
-(setq custom-file
-      (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+(global-set-key (kbd "C-l") 'goto-line)
+(global-set-key (kbd "C-;") 'comment-or-uncomment-region)
 
 (require 'init-defaults)
 (require 'init-appearance)
@@ -66,12 +65,9 @@
     (setenv "PATH" (concat (getenv "PATH") ":" p))
     (add-to-list 'exec-path p)))
 
-(let ((p "/usr/local/bin"))
-  (setenv "PATH" (concat (getenv "PATH") ":" p))
-  (add-to-list 'exec-path p))
-
-(global-set-key (kbd "C-/") 'comment-or-uncomment-region)
-(global-set-key (kbd "C-l") 'goto-line)
+;; (let ((p "/usr/local/bin"))
+;;   (setenv "PATH" (concat (getenv "PATH") ":" p))
+;;   (add-to-list 'exec-path p))
 
 ;;
 ;; multiple-cursors
@@ -97,44 +93,80 @@
 
   (dired-details-install))
 
+;; ag.el
+(use-package ag
+  :ensure t
+  :defer t
+  :config
+  (add-hook 'ag-mode-hook 'toggle-truncate-lines)
+  (setq ag-highlight-search t)
+  (setq ag-reuse-buffers 't))
+
+;; ivy
+(use-package ivy
+  :ensure t
+  :diminish ivy-mode
+  :config
+  (ivy-mode 1)
+  (bind-key "C-c C-r" 'ivy-resume))
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-global-mode)
+  (setq projectile-mode-line
+        '(:eval (format " [%s]" (projectile-project-name))))
+  (setq projectile-remember-window-configs t)
+  (setq projectile-completion-system 'ivy))
+
+;; counsel
+(use-package counsel
+  :ensure t
+  :defer t
+  :bind
+  ("M-x" . counsel-M-x)
+  ;; ("C-z f" . counsel-describe-function)
+  ;; ("C-z v" . counsel-describe-variable)
+  ("C-c k" . counsel-ag))
+
 ;;
 ;; helm
 ;;
-(use-package helm
-  :ensure t
-  :defer t
-  :commands
-  (helm-get-sources helm-marked-candidates)
+;; (use-package helm
+;;   :ensure t
+;;   :defer t
+;;   :commands
+;;   (helm-get-sources helm-marked-candidates)
 
-  :init
-  (require 'helm-config)
+;;   :init
+;;   (require 'helm-config)
 
-  :config
-  (setq helm-autoresize-min-height 20)
-  (setq helm-autoresize-max-height 40)
-  (setq projectile-completion-system 'helm)
+;;   :config
+;;   (setq helm-autoresize-min-height 20)
+;;   (setq helm-autoresize-max-height 40)
+;;   (setq projectile-completion-system 'helm)
 
-  (helm-projectile-on)
-  (helm-autoresize-mode 1)
-  (helm-mode 1)
+;;   (helm-projectile-on)
+;;   (helm-autoresize-mode 1)
+;;   (helm-mode 1)
 
-  :bind (("M-x" . helm-M-x)
-         ("C-x b" . helm-mini)
-         ("C-x C-f" . helm-find-files)))
+;;   :bind (("M-x" . helm-M-x)
+;;          ("C-x b" . helm-mini)
+;;          ("C-x C-f" . helm-find-files)))
 
-(use-package helm-projectile
-  :ensure t
-  :defer t
-  :config
-  (projectile-global-mode)
-  (setq helm-projectile-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
-  (setq helm-projectile-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))
-  (setq projectile-enable-caching t)
+;; (use-package helm-projectile
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   (projectile-global-mode)
+;;   (setq helm-projectile-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
+;;   (setq helm-projectile-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))
+;;   (setq projectile-enable-caching t)
 
-  :bind (("C-c p h" . helm-projectile)
-         ("C-c p p" . helm-projectile-switch-project)
-         ("C-c p f" . helm-projectile-find-file)
-         ("C-c p g" . helm-projectile-ag)))
+;;   :bind (("C-c p h" . helm-projectile)
+;;          ("C-c p p" . helm-projectile-switch-project)
+;;          ("C-c p f" . helm-projectile-find-file)
+;;          ("C-c p g" . helm-projectile-ag)))
 
 ;;
 ;; flycheck
@@ -172,6 +204,7 @@
         (setq-local flycheck-javascript-eslint-executable eslint))))
 
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+  (add-hook 'go-mode-hook 'flycheck-mode)
 
   :bind ("C-c C-l" . flycheck-list-errors))
 
@@ -188,6 +221,15 @@
   (add-hook 'lisp-mode-hook 'paredit-mode)
   (add-hook 'lisp-interaction-mode-hook 'paredit-mode)
   (add-hook 'emacs-lisp-mode-hook 'paredit-mode))
+
+;;
+;; undo-tree
+;;
+;; (use-package undo-tree
+;;   :ensure t
+;;   :diminish undo-tree-mode
+;;   :config
+;;   (global-undo-tree-mode 1))
 
 (use-package whitespace
   :ensure t
@@ -223,8 +265,8 @@
 ;;
 (use-package magit
   :ensure t
-  :bind
-  ("C-x m" . magit-status))
+  :defer t
+  :bind ("C-x m" . magit-status))
 
 (use-package git-gutter-fringe
   :ensure t
@@ -333,31 +375,68 @@
   :defer t
   :mode "\\.go\\'"
   :config
-  (use-package auto-complete   :ensure t)
-  (use-package go-add-tags     :ensure t)
-  (use-package go-autocomplete :ensure t)
-  (use-package go-eldoc        :ensure t)
-  (use-package go-errcheck     :ensure t)
-  (use-package go-gopath       :ensure t)
-  (use-package go-projectile   :ensure t)
-  (use-package golint          :ensure t)
-  (use-package gotest          :ensure t)
-
   (setq gofmt-command "goimports")
-  (add-hook 'before-save-hook 'gofmt-before-save)
 
-  (flycheck-mode t)
-  (auto-complete-mode)
-  (go-set-project)
-  (go-eldoc-setup)
+  (add-hook 'before-save-hook 'gofmt-before-save)
 
   (add-hook 'go-mode-hook
             (lambda ()
+              (go-set-project)
               (setq tab-width 4)
-              (setq indent-tabs-mode 1)))
+              (setq indent-tabs-mode 1)
+              (subword-mode)
+              (local-set-key (kbd "C-c C-k") 'godoc-at-point)
+              (local-set-key (kbd "C-c r") 'go-rename)
+              (local-set-key (kbd "C-c f") 'go-test-current-file)
+              (local-set-key (kbd "C-c t") 'go-test-current-test)
+              (local-set-key (kbd "C-c p") 'go-test-current-project)
+              (local-set-key (kbd "C-c b") 'go-test-current-benchmark)
+              (local-set-key (kbd "C-c x") 'go-run)))
 
-  :bind
-  ("M-." . godef-jump))
+  :bind ("M-." . godef-jump))
+
+(use-package flycheck-gometalinter
+  :ensure t
+  :config
+  (flycheck-gometalinter-setup)
+  (setq flycheck-gometalinter-fast t)
+  (setq flycheck-gometalinter-disable-linters '("gotype")))
+
+(use-package go-gopath
+  :ensure t)
+
+(use-package go-rename
+  :load-path "vendor")
+
+(use-package gotest
+  :ensure t)
+
+(use-package go-guru
+  :ensure t
+  :load-path "vendor")
+
+(use-package go-projectile
+  :ensure t)
+
+;; go-add-tags
+(use-package go-add-tags
+  :ensure t
+  :config
+  (with-eval-after-load 'go-mode
+    (define-key go-mode-map (kbd "C-c t") #'go-add-tags)))
+
+;; go-direx
+(use-package go-direx
+  :ensure t
+  :defer t
+  :config
+  (define-key go-mode-map (kbd "C-c C-t") 'go-direx-switch-to-buffer))
+
+;; go-eldoc
+(use-package go-eldoc
+  :ensure t
+  :config
+  (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 
 ;; (use-package lsp-mode
@@ -381,11 +460,11 @@
   (setq rust-ident-offset 4)
   (setq tab-width 4)
 
-  (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+  ;; (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
 
-  (setq company-tooltip-align-annotations t)
-  (setq company-minimum-prefix-length 1)
-  (setq company-idle-delay 0.2)
+  ;; (setq company-tooltip-align-annotations t)
+  ;; (setq company-minimum-prefix-length 1)
+  ;; (setq company-idle-delay 0.2)
 
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
@@ -426,18 +505,18 @@
 ;;
 ;; reason
 ;;
-;; (use-package reason-mode
-;;   :ensure f
-;;   :mode (("\\.re\\'" . reason-mode)
-;;          ("\\.rei\\'" . reason-mode))
-;;   :config
-;;   (use-package merlin :ensure t)
-;;   (use-package ocp-indent :ensure t)
-;;   ;; (add-hook 'reason-mode-hook
-;;   ;;           (lambda ()
-;;   ;;             ;; (add-hook 'before-save-hook 'refmt-before-save)
-;;   ;;             (merlin-mode)))
-;;   (setq merlin-ac-setup t))
+(use-package reason-mode
+  :ensure f
+  :mode (("\\.re\\'" . reason-mode)
+         ("\\.rei\\'" . reason-mode))
+  :config
+  ;; (use-package merlin :ensure t)
+  ;; (use-package ocp-indent :ensure t)
+  ;; (add-hook 'reason-mode-hook
+  ;;           (lambda ()
+  ;;             ;; (add-hook 'before-save-hook 'refmt-before-save)
+  ;;             (merlin-mode)))
+  (setq merlin-ac-setup t))
 
 ;;
 ;; css/sass
@@ -547,4 +626,12 @@
   (add-hook 'org-mode-hook
             (lambda () (org-bullets-mode 1))))
 
+(setq custom-file
+      (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
 ;; (require 'init-aspell)
+;; ## added by OPAM user-setup for emacs / base ## 56ab50dc8996d2bb95e7856a6eddb17b ## you can edit, but keep this line
+(require 'opam-user-setup "~/.emacs.d/opam-user-setup.el")
+;; ## end of OPAM user-setup addition for emacs / base ## keep this line
