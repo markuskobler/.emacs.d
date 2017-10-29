@@ -39,7 +39,7 @@
                  (expand-file-name p user-emacs-directory))))
 
 (global-set-key (kbd "C-l") 'goto-line)
-(global-set-key (kbd "C-;") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-/") 'comment-or-uncomment-region)
 
 (require 'init-defaults)
 (require 'init-appearance)
@@ -93,15 +93,6 @@
 
   (dired-details-install))
 
-;; ag.el
-(use-package ag
-  :ensure t
-  :defer t
-  :config
-  (add-hook 'ag-mode-hook 'toggle-truncate-lines)
-  (setq ag-highlight-search t)
-  (setq ag-reuse-buffers 't))
-
 ;; ivy
 (use-package ivy
   :ensure t
@@ -127,7 +118,7 @@
   ("M-x" . counsel-M-x)
   ;; ("C-z f" . counsel-describe-function)
   ;; ("C-z v" . counsel-describe-variable)
-  ("C-c k" . counsel-ag))
+  ("C-c k" . counsel-rg))
 
 ;;
 ;; helm
@@ -336,13 +327,14 @@
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
-;; scala
+;; java
 ;;
-;; (use-package ensime
-;;   :ensure t
-;;   :mode ("\\.scala\\'" "\\.sc\\'")
-;;   :config
-;;   (add-hook 'before-save-hook 'delete-trailing-whitespace))
+(use-package java-mode
+  :ensure t
+  :mode ("\\.java\\'")
+  :config
+  ;; (setq eclimd-executable "/Applications/Eclipse.app/Contents/Eclipse/eclimd")
+  (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
 ;; nix
