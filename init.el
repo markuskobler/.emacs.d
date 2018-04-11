@@ -96,10 +96,13 @@
 ;; ivy
 (use-package ivy
   :ensure t
-  :diminish ivy-mode
+  ;; :diminish ivy-mode
   :config
+  (setq ivy-use-virtual-buffers t)
   (ivy-mode 1)
-  (bind-key "C-c C-r" 'ivy-resume))
+  :bind
+  ("C-c C-r" . ivy-resume)
+  ("C-x b" . ivy-switch-buffer))
 
 (use-package projectile
   :ensure t
@@ -119,6 +122,18 @@
   ;; ("C-z f" . counsel-describe-function)
   ;; ("C-z v" . counsel-describe-variable)
   ("C-c k" . counsel-rg))
+
+(use-package company
+  ;; :bind
+  ;; ("TAB" . company-complete-common-or-cycle)
+  :config
+  ;; (setq company-dabbrev-code-modes t)
+  ;; (setq company-dabbrev-code-everywhere t)
+  (setq company-tooltip-limit 20)                       ; bigger popup window
+  (setq company-idle-delay .3)                          ; decrease delay before autocompletion popup shows
+  (setq company-echo-delay 0)                           ; remove annoying blinking
+  (setq company-begin-commands '(self-insert-command))  ; start autocompletion only after typing
+  (add-hook 'lisp-mode-hook 'company-mode))
 
 ;;
 ;; helm
@@ -283,7 +298,7 @@
 (use-package yaml-mode
   :ensure t
   :defer t
-  :mode "\\.yml\\'"
+  :mode "\\.\\(e?ya?\\|ra\\)ml\\'"
   :config
   (use-package yaml-tomato :ensure t))
 
@@ -295,7 +310,7 @@
   :defer t
   :mode ("\\.json\\'" "\\.jshintrc\\'")
   :config
-  (setq js-indent-level 2)
+  (setq js-indent-level 4)
   (flycheck-mode t)
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
@@ -329,12 +344,12 @@
 ;;
 ;; java
 ;;
-(use-package java-mode
-  :ensure t
-  :mode ("\\.java\\'")
-  :config
-  ;; (setq eclimd-executable "/Applications/Eclipse.app/Contents/Eclipse/eclimd")
-  (add-hook 'before-save-hook 'delete-trailing-whitespace))
+;; (use-package java-mode
+;;   :ensure t
+;;   :mode ("\\.java\\'")
+;;   :config
+;;   ;; (setq eclimd-executable "/Applications/Eclipse.app/Contents/Eclipse/eclimd")
+;;   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
 ;; nix
@@ -368,68 +383,72 @@
   :mode "\\.go\\'"
   :config
   (setq gofmt-command "goimports")
-
   (add-hook 'before-save-hook 'gofmt-before-save)
-
   (add-hook 'go-mode-hook
             (lambda ()
-              (go-set-project)
-              (setq tab-width 4)
-              (setq indent-tabs-mode 1)
               (subword-mode)
-              (local-set-key (kbd "C-c C-k") 'godoc-at-point)
-              (local-set-key (kbd "C-c r") 'go-rename)
-              (local-set-key (kbd "C-c f") 'go-test-current-file)
-              (local-set-key (kbd "C-c t") 'go-test-current-test)
-              (local-set-key (kbd "C-c p") 'go-test-current-project)
-              (local-set-key (kbd "C-c b") 'go-test-current-benchmark)
-              (local-set-key (kbd "C-c x") 'go-run)))
+              (go-set-project)
+              (company-mode t)
+              (setq tab-width 4)
+              (setq indent-tabs-mode 1)))
 
-  :bind ("M-." . godef-jump))
-
-(use-package flycheck-gometalinter
-  :ensure t
-  :config
-  (flycheck-gometalinter-setup)
-  (setq flycheck-gometalinter-fast t)
-  (setq flycheck-gometalinter-disable-linters '("gotype")))
-
-(use-package go-gopath
-  :ensure t)
-
-(use-package go-rename
-  :load-path "vendor")
-
-(use-package gotest
-  :ensure t)
-
-(use-package go-guru
-  :ensure t
-  :load-path "vendor")
+  :bind
+  ("M-." . godoc-at-point)
+  ("C-x r" . go-rename)
+  ("C-x C-k" . go-test-current-test)
+  ("C-x t" . go-test-current-test)
+  ("C-x f" . go-test-current-file)
+  ("C-x b" . go-test-current-benchmark)
+  ("C-x p" . go-test-current-project)
+  ("C-x x" . go-run))
 
 (use-package go-projectile
   :ensure t)
 
-;; go-add-tags
-(use-package go-add-tags
+(use-package go-eldoc
+  :after go-mode)
+
+(use-package gotest
+  :after go-mode)
+
+(use-package go-gopath
+  :after go-mode)
+
+(use-package go-rename
+  :after go-mode)
+
+(use-package go-guru
   :ensure t
+  :after go-mode
   :config
-  (with-eval-after-load 'go-mode
-    (define-key go-mode-map (kbd "C-c t") #'go-add-tags)))
+  (set-face-attribute 'go-guru-hl-identifier-face nil
+                      :inherit 'isearch))
+
+(use-package company-go
+  :ensure t
+  :after go-mode
+  :config
+  (add-to-list 'company-backends 'company-go))
+
+;; (use-package go-add-tags
+;;   :ensure t
+;;   :config
+;;   (with-eval-after-load 'go-mode
+;;     (define-key go-mode-map (kbd "C-x t") #'go-add-tags)))
+
+;; (use-package flycheck-gometalinter
+;;   :ensure t
+;;   :config
+;;   (flycheck-gometalinter-setup)
+;;   (setq flycheck-gometalinter-fast t)
+;;   (setq flycheck-gometalinter-disable-linters '("gotype")))
 
 ;; go-direx
-(use-package go-direx
-  :ensure t
-  :defer t
-  :config
-  (define-key go-mode-map (kbd "C-c C-t") 'go-direx-switch-to-buffer))
-
-;; go-eldoc
-(use-package go-eldoc
-  :ensure t
-  :config
-  (add-hook 'go-mode-hook 'go-eldoc-setup))
-
+;; (use-package go-direx
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   (define-key go-mode-map (kbd "C-c C-t") 'go-direx-switch-to-buffer))
 
 ;; (use-package lsp-mode
 ;;   :ensure t
@@ -544,8 +563,12 @@
 ;;
 (use-package tern
   :ensure t
-  :defer t
   :defer t)
+
+(use-package company-tern
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-tern))
 
 (use-package js2-mode
   :ensure t
@@ -584,18 +607,6 @@
   (add-hook 'before-save-hook 'delete-trailing-whitespace))
 
 ;;
-;; coffee
-;;
-(use-package coffee-mode
-  :ensure t
-  :defer t
-  :mode "\\.coffee\\'"
-  :config
-  (setq whitespace-action '(auto-cleanup))
-  (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))
-  (add-hook 'before-save-hook 'delete-trailing-whitespace))
-
-;;
 ;; HTML
 ;;
 (use-package web-mode
@@ -617,6 +628,17 @@
   :config
   (add-hook 'org-mode-hook
             (lambda () (org-bullets-mode 1))))
+
+;;
+;; python
+;;
+(use-package python
+  :defer t
+  :mode (("\\.py\\'" . python-mode)
+         ("\\.bzl\\'" . python-mode)
+         ("\\.bazel\\'" . python-mode)
+         ("WORKSPACE" . python-mode))
+  :interpreter ("python" . python-mode))
 
 (setq custom-file
       (expand-file-name "custom.el" user-emacs-directory))
